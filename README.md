@@ -1,8 +1,10 @@
 # BIP32
 
-[![Platform](https://img.shields.io/badge/Platforms-macOS%20%7C%20iOS-4E4E4E.svg?colorA=28a745)](#platforms) [![Swift Package Manager compatible](https://img.shields.io/badge/SPM-compatible-brightgreen.svg?style=flat&colorA=28a745&&colorB=4E4E4E)](#swift-package-manager)
+[![Platform](https://img.shields.io/badge/Platforms-macOS%20%7C%20iOS-blue)](#platforms)
+[![Swift Package Manager compatible](https://img.shields.io/badge/SPM-compatible-orange)](#swift-package-manager)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/anquii/BIP32/blob/main/LICENSE)
 
-An implementation of [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) in Swift.
+An implementation of [BIP-0032](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) in Swift.
 
 ## Platforms
 - macOS 10.15+
