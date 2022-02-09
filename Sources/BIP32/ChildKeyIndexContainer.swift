@@ -7,10 +7,12 @@ public struct ChildKeyIndexContainer: ChildKeyIndexContaining {
 
     public init(
         index: UInt32,
+        indexTransformer: ChildKeyIndexTransforming = ChildKeyIndexTransformer(),
         indexValidator: ChildKeyIndexValidating = ChildKeyIndexValidator(),
         shouldHarden: Bool
     ) throws {
-        self.index = shouldHarden ? ChildKeyDerivationRange.hardened.lowerBound + index : index
-        try indexValidator.validateIndex(self.index, isHardened: shouldHarden)
+        let transformedIndex = try indexTransformer.index(index, shouldHarden: shouldHarden)
+        try indexValidator.validateIndex(transformedIndex, isHardened: shouldHarden)
+        self.index = transformedIndex
     }
 }
