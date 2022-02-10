@@ -18,14 +18,18 @@ extension MasterKeyGenerator: MasterKeyGenerating {
             key: Self.hmacSHA512Key.bytes,
             variant: .sha2(.sha512)
         )
-        let hmacSHA512Bytes = try hmacSHA512.authenticate(seed.bytes)
-        let masterPrivateKey = hmacSHA512Bytes[HMACSHA512ByteRange.left]
-        let masterChainCode = hmacSHA512Bytes[HMACSHA512ByteRange.right]
+        do {
+            let hmacSHA512Bytes = try hmacSHA512.authenticate(seed.bytes)
+            let masterPrivateKey = hmacSHA512Bytes[HMACSHA512ByteRange.left]
+            let masterChainCode = hmacSHA512Bytes[HMACSHA512ByteRange.right]
 
-        return ExtendedKey(
-            key: Data(masterPrivateKey),
-            chainCode: Data(masterChainCode)
-        )
+            return ExtendedKey(
+                key: Data(masterPrivateKey),
+                chainCode: Data(masterChainCode)
+            )
+        } catch {
+            throw MasterKeyGeneratorError.invalidMasterKey
+        }
     }
 }
 
