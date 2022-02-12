@@ -1,14 +1,14 @@
-public protocol ChildKeyIndexContaining {
+public protocol KeyIndexContaining {
     var index: UInt32 { get }
 }
 
-public struct ChildKeyIndexContainer: ChildKeyIndexContaining {
+public struct KeyIndexContainer: KeyIndexContaining {
     public let index: UInt32
 
     public init(
         index: UInt32,
-        indexTransformer: ChildKeyIndexTransforming = ChildKeyIndexTransformer(),
-        indexValidator: ChildKeyIndexValidating = ChildKeyIndexValidator(),
+        indexTransformer: KeyIndexTransforming = KeyIndexTransformer(),
+        indexValidator: KeyIndexValidating = KeyIndexValidator(),
         shouldHarden: Bool
     ) throws {
         let transformedIndex = try indexTransformer.index(index, shouldHarden: shouldHarden)

@@ -1,8 +1,8 @@
 import XCTest
 @testable import BIP32
 
-final class ChildKeyIndexValidatorTests: XCTestCase {
-    private func sut() -> ChildKeyIndexValidator {
+final class KeyIndexValidatorTests: XCTestCase {
+    private func sut() -> KeyIndexValidator {
         .init()
     }
 
@@ -15,14 +15,14 @@ final class ChildKeyIndexValidatorTests: XCTestCase {
 
     func testGivenNormalLowerBoundIndex_AndUnhardenedIndication_WhenValidate_ThenValidIndex() {
         testValidIndex(
-            ChildKeyDerivationRange.normal.lowerBound,
+            KeyDerivationRange.normal.lowerBound,
             isHardened: false
         )
     }
 
     func testGivenNormalUpperBoundIndex_AndUnhardenedIndication_WhenValidate_ThenValidIndex() {
         testValidIndex(
-            ChildKeyDerivationRange.normal.upperBound,
+            KeyDerivationRange.normal.upperBound,
             isHardened: false
         )
     }
@@ -36,14 +36,14 @@ final class ChildKeyIndexValidatorTests: XCTestCase {
 
     func testGivenHardenedLowerBoundIndex_AndHardenedIndication_WhenValidate_ThenValidIndex() {
         testValidIndex(
-            ChildKeyDerivationRange.hardened.lowerBound,
+            KeyDerivationRange.hardened.lowerBound,
             isHardened: true
         )
     }
 
     func testGivenHardenedUpperBoundIndex_AndHardenedIndication_WhenValidate_ThenValidIndex() {
         testValidIndex(
-            ChildKeyDerivationRange.hardened.upperBound,
+            KeyDerivationRange.hardened.upperBound,
             isHardened: true
         )
     }
@@ -58,7 +58,7 @@ final class ChildKeyIndexValidatorTests: XCTestCase {
 
     func testGivenNormalLowerBoundIndex_AndHardenedIndication_WhenValidate_ThenThrowInvalidIndexError() {
         testInvalidIndex(
-            ChildKeyDerivationRange.normal.lowerBound,
+            KeyDerivationRange.normal.lowerBound,
             isHardened: true,
             expectedError: .invalidIndex
         )
@@ -66,7 +66,7 @@ final class ChildKeyIndexValidatorTests: XCTestCase {
 
     func testGivenNormalUpperBoundIndex_AndHardenedIndication_WhenValidate_ThenThrowInvalidIndexError() {
         testInvalidIndex(
-            ChildKeyDerivationRange.normal.upperBound,
+            KeyDerivationRange.normal.upperBound,
             isHardened: true,
             expectedError: .invalidIndex
         )
@@ -74,7 +74,7 @@ final class ChildKeyIndexValidatorTests: XCTestCase {
 
     func testGivenNormalUpperBoundIndexPlus1_AndUnhardenedIndication_WhenValidate_ThenThrowInvalidIndexError() {
         testInvalidIndex(
-            ChildKeyDerivationRange.normal.upperBound + 1,
+            KeyDerivationRange.normal.upperBound + 1,
             isHardened: false,
             expectedError: .invalidIndex
         )
@@ -90,7 +90,7 @@ final class ChildKeyIndexValidatorTests: XCTestCase {
 
     func testGivenHardenedLowerBoundIndex_AndUnhardenedIndication_WhenValidate_ThenThrowInvalidIndexError() {
         testInvalidIndex(
-            ChildKeyDerivationRange.hardened.lowerBound,
+            KeyDerivationRange.hardened.lowerBound,
             isHardened: false,
             expectedError: .invalidIndex
         )
@@ -98,7 +98,7 @@ final class ChildKeyIndexValidatorTests: XCTestCase {
 
     func testGivenHardenedLowerBoundIndexMinus1_AndHardenedIndication_WhenValidate_ThenThrowInvalidIndexError() {
         testInvalidIndex(
-            ChildKeyDerivationRange.hardened.lowerBound - 1,
+            KeyDerivationRange.hardened.lowerBound - 1,
             isHardened: true,
             expectedError: .invalidIndex
         )
@@ -106,7 +106,7 @@ final class ChildKeyIndexValidatorTests: XCTestCase {
 
     func testGivenHardenedUpperBoundIndex_AndUnhardenedIndication_WhenValidate_ThenThrowInvalidIndexError() {
         testInvalidIndex(
-            ChildKeyDerivationRange.hardened.upperBound,
+            KeyDerivationRange.hardened.upperBound,
             isHardened: false,
             expectedError: .invalidIndex
         )
@@ -114,19 +114,19 @@ final class ChildKeyIndexValidatorTests: XCTestCase {
 }
 
 // MARK: - Helpers
-extension ChildKeyIndexValidatorTests {
+extension KeyIndexValidatorTests {
     func testValidIndex(_ index: UInt32, isHardened: Bool) {
         XCTAssertNoThrow(
             try sut().validateIndex(index, isHardened: isHardened)
         )
     }
 
-    func testInvalidIndex(_ index: UInt32, isHardened: Bool, expectedError: ChildKeyIndexError) {
+    func testInvalidIndex(_ index: UInt32, isHardened: Bool, expectedError: KeyIndexError) {
         XCTAssertThrowsError(
             try sut().validateIndex(index, isHardened: isHardened)
         ) { error in
             XCTAssertEqual(
-                error as! ChildKeyIndexError,
+                error as! KeyIndexError,
                 expectedError
             )
         }

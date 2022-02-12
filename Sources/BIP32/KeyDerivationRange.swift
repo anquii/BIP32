@@ -1,4 +1,4 @@
-struct ChildKeyDerivationRange {
+struct KeyDerivationRange {
     private init() {}
 
     static let normal: ClosedRange<UInt32> = 0x0...0x7FFFFFFF

@@ -1,8 +1,8 @@
 import XCTest
 @testable import BIP32
 
-final class ChildKeyIndexContainerTests: XCTestCase {
-    private func sut(index: UInt32, shouldHarden: Bool) throws -> ChildKeyIndexContainer {
+final class KeyIndexContainerTests: XCTestCase {
+    private func sut(index: UInt32, shouldHarden: Bool) throws -> KeyIndexContainer {
         try .init(index: index, shouldHarden: shouldHarden)
     }
 
@@ -16,17 +16,17 @@ final class ChildKeyIndexContainerTests: XCTestCase {
 
     func testGivenNormalLowerBoundIndex_AndShouldNotHarden_WhenInit_AndGetIndex_ThenSameIndex() throws {
         try testValidIndex(
-            ChildKeyDerivationRange.normal.lowerBound,
+            KeyDerivationRange.normal.lowerBound,
             shouldHarden: false,
-            expectedIndexOutput: ChildKeyDerivationRange.normal.lowerBound
+            expectedIndexOutput: KeyDerivationRange.normal.lowerBound
         )
     }
 
     func testGivenNormalUpperBoundIndex_AndShouldNotHarden_WhenInit_AndGetIndex_ThenSameIndex() throws {
         try testValidIndex(
-            ChildKeyDerivationRange.normal.upperBound,
+            KeyDerivationRange.normal.upperBound,
             shouldHarden: false,
-            expectedIndexOutput: ChildKeyDerivationRange.normal.upperBound
+            expectedIndexOutput: KeyDerivationRange.normal.upperBound
         )
     }
 
@@ -40,17 +40,17 @@ final class ChildKeyIndexContainerTests: XCTestCase {
 
     func testGivenNormalLowerBoundIndex_AndShouldHarden_WhenInit_AndGetIndex_ThenHardenedLowerBoundIndex() throws {
         try testValidIndex(
-            ChildKeyDerivationRange.normal.lowerBound,
+            KeyDerivationRange.normal.lowerBound,
             shouldHarden: true,
-            expectedIndexOutput: ChildKeyDerivationRange.hardened.lowerBound
+            expectedIndexOutput: KeyDerivationRange.hardened.lowerBound
         )
     }
 
     func testGivenNormalUpperBoundIndex_AndShouldHarden_WhenInit_AndGetIndex_ThenHardenedUpperBoundIndex() throws {
         try testValidIndex(
-            ChildKeyDerivationRange.normal.upperBound,
+            KeyDerivationRange.normal.upperBound,
             shouldHarden: true,
-            expectedIndexOutput: ChildKeyDerivationRange.hardened.upperBound
+            expectedIndexOutput: KeyDerivationRange.hardened.upperBound
         )
     }
 
@@ -64,7 +64,7 @@ final class ChildKeyIndexContainerTests: XCTestCase {
 }
 
 // MARK: - Helpers
-extension ChildKeyIndexContainerTests {
+extension KeyIndexContainerTests {
     func testValidIndex(_ index: UInt32, shouldHarden: Bool, expectedIndexOutput: UInt32) throws {
         XCTAssertEqual(
             try sut(index: index, shouldHarden: shouldHarden).index,
@@ -72,12 +72,12 @@ extension ChildKeyIndexContainerTests {
         )
     }
 
-    func testInvalidIndex(_ index: UInt32, shouldHarden: Bool, expectedError: ChildKeyIndexError) {
+    func testInvalidIndex(_ index: UInt32, shouldHarden: Bool, expectedError: KeyIndexError) {
         XCTAssertThrowsError(
             try sut(index: index, shouldHarden: shouldHarden)
         ) { error in
             XCTAssertEqual(
-                error as! ChildKeyIndexError,
+                error as! KeyIndexError,
                 expectedError
             )
         }

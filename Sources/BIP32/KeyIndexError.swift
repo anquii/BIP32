@@ -1,4 +1,4 @@
-public enum ChildKeyIndexError: Error {
+public enum KeyIndexError: Error {
     case memorySpaceExceeded
     case invalidIndex
 }
