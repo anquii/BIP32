@@ -12,16 +12,14 @@ final class MasterKeyGeneratorTests: XCTestCase {
         )
     }
 
-    func testGivenSeed_WhenGenerate_AndCountMasterPrivateKeyBytes_ThenEqual32() throws {
+    func testGivenSeed_WhenGenerate_AndCountKeyBytes_ThenEqual32() throws {
         let extendedKey = try sut().masterKey(seed: testSeed())
-        let masterPrivateKeyByteCount = extendedKey.key.count
-        XCTAssertEqual(masterPrivateKeyByteCount, 32)
+        XCTAssertEqual(extendedKey.key.count, 32)
     }
 
-    func testGivenSeed_WhenGenerate_AndCountMasterChainCodeBytes_ThenEqual32() throws {
+    func testGivenSeed_WhenGenerate_AndCountChainCodeBytes_ThenEqual32() throws {
         let extendedKey = try sut().masterKey(seed: testSeed())
-        let masterChainCodeByteCount = extendedKey.chainCode.count
-        XCTAssertEqual(masterChainCodeByteCount, 32)
+        XCTAssertEqual(extendedKey.chainCode.count, 32)
     }
 }
 

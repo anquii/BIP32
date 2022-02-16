@@ -10,8 +10,8 @@ public struct KeyIndexValidator {
 extension KeyIndexValidator: KeyIndexValidating {
     public func validateIndex(_ index: UInt32, isHardened: Bool) throws {
         let rules = [
-            !isHardened && KeyDerivationRange.normal.contains(index),
-            isHardened && KeyDerivationRange.hardened.contains(index)
+            !isHardened && KeyIndexRange.normal.contains(index),
+            isHardened && KeyIndexRange.hardened.contains(index)
         ]
 
         if !rules.contains(true) {

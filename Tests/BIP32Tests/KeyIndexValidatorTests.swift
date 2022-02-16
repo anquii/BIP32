@@ -15,14 +15,14 @@ final class KeyIndexValidatorTests: XCTestCase {
 
     func testGivenNormalLowerBoundIndex_AndUnhardenedIndication_WhenValidate_ThenValidIndex() {
         testValidIndex(
-            KeyDerivationRange.normal.lowerBound,
+            KeyIndexRange.normal.lowerBound,
             isHardened: false
         )
     }
 
     func testGivenNormalUpperBoundIndex_AndUnhardenedIndication_WhenValidate_ThenValidIndex() {
         testValidIndex(
-            KeyDerivationRange.normal.upperBound,
+            KeyIndexRange.normal.upperBound,
             isHardened: false
         )
     }
@@ -36,14 +36,14 @@ final class KeyIndexValidatorTests: XCTestCase {
 
     func testGivenHardenedLowerBoundIndex_AndHardenedIndication_WhenValidate_ThenValidIndex() {
         testValidIndex(
-            KeyDerivationRange.hardened.lowerBound,
+            KeyIndexRange.hardened.lowerBound,
             isHardened: true
         )
     }
 
     func testGivenHardenedUpperBoundIndex_AndHardenedIndication_WhenValidate_ThenValidIndex() {
         testValidIndex(
-            KeyDerivationRange.hardened.upperBound,
+            KeyIndexRange.hardened.upperBound,
             isHardened: true
         )
     }
@@ -58,7 +58,7 @@ final class KeyIndexValidatorTests: XCTestCase {
 
     func testGivenNormalLowerBoundIndex_AndHardenedIndication_WhenValidate_ThenThrowInvalidIndexError() {
         testInvalidIndex(
-            KeyDerivationRange.normal.lowerBound,
+            KeyIndexRange.normal.lowerBound,
             isHardened: true,
             expectedError: .invalidIndex
         )
@@ -66,7 +66,7 @@ final class KeyIndexValidatorTests: XCTestCase {
 
     func testGivenNormalUpperBoundIndex_AndHardenedIndication_WhenValidate_ThenThrowInvalidIndexError() {
         testInvalidIndex(
-            KeyDerivationRange.normal.upperBound,
+            KeyIndexRange.normal.upperBound,
             isHardened: true,
             expectedError: .invalidIndex
         )
@@ -74,7 +74,7 @@ final class KeyIndexValidatorTests: XCTestCase {
 
     func testGivenNormalUpperBoundIndexPlus1_AndUnhardenedIndication_WhenValidate_ThenThrowInvalidIndexError() {
         testInvalidIndex(
-            KeyDerivationRange.normal.upperBound + 1,
+            KeyIndexRange.normal.upperBound + 1,
             isHardened: false,
             expectedError: .invalidIndex
         )
@@ -90,7 +90,7 @@ final class KeyIndexValidatorTests: XCTestCase {
 
     func testGivenHardenedLowerBoundIndex_AndUnhardenedIndication_WhenValidate_ThenThrowInvalidIndexError() {
         testInvalidIndex(
-            KeyDerivationRange.hardened.lowerBound,
+            KeyIndexRange.hardened.lowerBound,
             isHardened: false,
             expectedError: .invalidIndex
         )
@@ -98,7 +98,7 @@ final class KeyIndexValidatorTests: XCTestCase {
 
     func testGivenHardenedLowerBoundIndexMinus1_AndHardenedIndication_WhenValidate_ThenThrowInvalidIndexError() {
         testInvalidIndex(
-            KeyDerivationRange.hardened.lowerBound - 1,
+            KeyIndexRange.hardened.lowerBound - 1,
             isHardened: true,
             expectedError: .invalidIndex
         )
@@ -106,7 +106,7 @@ final class KeyIndexValidatorTests: XCTestCase {
 
     func testGivenHardenedUpperBoundIndex_AndUnhardenedIndication_WhenValidate_ThenThrowInvalidIndexError() {
         testInvalidIndex(
-            KeyDerivationRange.hardened.upperBound,
+            KeyIndexRange.hardened.upperBound,
             isHardened: false,
             expectedError: .invalidIndex
         )

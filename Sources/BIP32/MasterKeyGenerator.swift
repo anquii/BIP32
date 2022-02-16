@@ -20,15 +20,15 @@ extension MasterKeyGenerator: MasterKeyGenerating {
         )
         do {
             let hmacSHA512Bytes = try hmacSHA512.authenticate(seed.bytes)
-            let masterPrivateKey = hmacSHA512Bytes[HMACSHA512ByteRange.left]
-            let masterChainCode = hmacSHA512Bytes[HMACSHA512ByteRange.right]
+            let key = hmacSHA512Bytes[HMACSHA512ByteRange.left]
+            let chainCode = hmacSHA512Bytes[HMACSHA512ByteRange.right]
 
             return ExtendedKey(
-                key: Data(masterPrivateKey),
-                chainCode: Data(masterChainCode)
+                key: Data(key),
+                chainCode: Data(chainCode)
             )
         } catch {
-            throw MasterKeyGeneratorError.invalidMasterKey
+            throw KeyError.invalidKey
         }
     }
 }
