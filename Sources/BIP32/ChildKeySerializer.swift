@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol KeySerializing {
+public protocol ChildKeySerializing {
     func serializedKey(
         extendedKey: ExtendedKeyable,
         version: UInt32,
@@ -10,15 +10,12 @@ public protocol KeySerializing {
     ) throws -> SerializedKeyable
 }
 
-public struct KeySerializer {
-    private static let capacity = 78
-    private static let sizeValidationRange = 77...78
-
+public struct ChildKeySerializer {
     public init() {}
 }
 
-// MARK: - KeySerializing
-extension KeySerializer: KeySerializing {
+// MARK: - ChildKeySerializing
+extension ChildKeySerializer: ChildKeySerializing {
     public func serializedKey(
         extendedKey: ExtendedKeyable,
         version: UInt32,
@@ -26,7 +23,7 @@ extension KeySerializer: KeySerializing {
         fingerprint: UInt32,
         index: UInt32
     ) throws -> SerializedKeyable {
-        var data = Data(capacity: Self.capacity)
+        var data = Data(capacity: SerializedKeySize.capacity)
 
         data += version.bytes
         data += depth.bytes
@@ -35,17 +32,10 @@ extension KeySerializer: KeySerializing {
         data += extendedKey.chainCode
         data += extendedKey.key
 
-        guard Self.sizeValidationRange.contains(data.count) else {
+        guard SerializedKeySize.range.contains(data.count) else {
             throw KeyError.invalidKey
         }
 
         return SerializedKey(data: data)
-    }
-}
-
-// MARK: - FixedWidthInteger+Bytes
-fileprivate extension FixedWidthInteger {
-    var bytes: [UInt8] {
-        withUnsafeBytes(of: byteSwapped, Array.init)
     }
 }

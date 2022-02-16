@@ -2,7 +2,7 @@ import secp256k1
 
 public protocol PublicKeyGenerating {
     func publicKey(
-        serializedKey: SerializedKeyable,
+        extendedKey: ExtendedKeyable,
         format: PublicKeyFormat
     ) -> ExtendedKeyable
 }
@@ -14,17 +14,17 @@ public struct PublicKeyGenerator {
 // MARK: - PublicKeyGenerating
 extension PublicKeyGenerator: PublicKeyGenerating {
     public func publicKey(
-        serializedKey: SerializedKeyable,
+        extendedKey: ExtendedKeyable,
         format: PublicKeyFormat
     ) -> ExtendedKeyable {
         let key = secp256k1.Signing.PublicKey(
-            rawRepresentation: serializedKey.key,
+            rawRepresentation: extendedKey.key,
             format: .compressed
         ).rawRepresentation
 
         return ExtendedKey(
             key: key,
-            chainCode: serializedKey.chainCode
+            chainCode: extendedKey.chainCode
         )
     }
 }

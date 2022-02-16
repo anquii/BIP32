@@ -36,9 +36,9 @@ extension MasterKeyGenerator: MasterKeyGenerating {
 // MARK: - Helpers
 fileprivate extension MasterKeyGenerator {
     struct HMACSHA512ByteRange {
-        private init() {}
-
         static let left = ..<32
         static let right = 32...
+
+        private init() {}
     }
 }

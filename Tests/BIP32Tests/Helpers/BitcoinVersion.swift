@@ -1,5 +1,3 @@
-import BIP32
-
 @propertyWrapper struct BitcoinVersion {
     var wrappedValue: UInt32
 

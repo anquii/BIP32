@@ -48,14 +48,14 @@ extension SerializedKey: SerializedKeyable {
 // MARK: - Helpers
 fileprivate extension SerializedKey {
     struct ByteRange {
-        private init() {}
-
         static let version = ...3
         static let depth = 4
         static let fingerprint = 5...8
         static let index = 9...12
         static let chainCode = 13...44
         static let key = 45...
+
+        private init() {}
     }
 }
 
