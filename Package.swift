@@ -13,7 +13,14 @@ let package = Package(
             name: "BIP32",
             targets: ["BIP32"]
         )
-    ], 
+    ],
+    dependencies: [
+        .package(
+            name: "secp256k1",
+            url: "https://github.com/GigaBitcoin/secp256k1.swift.git",
+            .upToNextMajor(from: "0.4.0")
+        ),
+    ],
     targets: [
         .binaryTarget(
             name: "CryptoSwift",
@@ -22,7 +29,10 @@ let package = Package(
         ),
         .target(
             name: "BIP32",
-            dependencies: ["CryptoSwift"]
+            dependencies: [
+                "CryptoSwift",
+                "secp256k1"
+            ]
         ),
         .testTarget(
             name: "BIP32Tests",
