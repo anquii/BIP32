@@ -42,6 +42,12 @@ final class MasterKeySerializerTests: XCTestCase {
             try serializedKey().index, 0
         )
     }
+
+    func testGivenSerializedKey_WhenGetKeyPrefix_ThenEqual0() throws {
+        XCTAssertEqual(
+            try serializedKey().key.first, 0
+        )
+    }
 }
 
 // MARK: - Helpers
