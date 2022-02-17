@@ -7,7 +7,7 @@ final class MasterKeyGeneratorTests: XCTestCase {
         .init()
     }
 
-    func testGivenSeed_WhenGenerate_ThenAssertNoThrow() {
+    func testGivenSeed_WhenGenerate_ThenNoErrorThrown() {
         XCTAssertNoThrow(
             try sut().masterKey(seed: testSeed())
         )

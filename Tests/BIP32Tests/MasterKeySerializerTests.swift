@@ -13,45 +13,9 @@ final class MasterKeySerializerTests: XCTestCase {
         .init()
     }
 
-    func testGivenMasterKey_AndVersion_WhenSerialize_ThenAssertNoThrow() throws {
+    func testGivenMasterKey_AndVersion_WhenSerialize_ThenNoErrorThrown() throws {
         XCTAssertNoThrow(
             try serializedKey()
-        )
-    }
-
-    func testGivenSerializedKey_WhenCountVersionBytes_ThenEqual4() throws {
-        XCTAssertEqual(
-            try serializedKey().version.bytes.count, 4
-        )
-    }
-
-    func testGivenSerializedKey_WhenCountDepthBytes_ThenEqual1() throws {
-        XCTAssertEqual(
-            try serializedKey().depth.bytes.count, 1
-        )
-    }
-
-    func testGivenSerializedKey_WhenCountFingerprintBytes_ThenEqual4() throws {
-        XCTAssertEqual(
-            try serializedKey().fingerprint.bytes.count, 4
-        )
-    }
-
-    func testGivenSerializedKey_WhenCountIndexBytes_ThenEqual4() throws {
-        XCTAssertEqual(
-            try serializedKey().index.bytes.count, 4
-        )
-    }
-
-    func testGivenSerializedKey_WhenCountChainCodeBytes_ThenEqual32() throws {
-        XCTAssertEqual(
-            try serializedKey().chainCode.count, 32
-        )
-    }
-
-    func testGivenSerializedKey_WhenCountKeyBytes_ThenEqual33() throws {
-        XCTAssertEqual(
-            try serializedKey().key.count, 33
         )
     }
 
