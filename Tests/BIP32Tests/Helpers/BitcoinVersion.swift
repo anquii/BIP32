@@ -1,16 +1,16 @@
-@propertyWrapper struct BitcoinVersion {
-    var wrappedValue: UInt32
+struct BitcoinVersionContainer {
+    let version: UInt32
 
     init(network: Network, keyAccessControl: KeyAccessControl) {
         switch (network, keyAccessControl) {
         case (.mainnet, .`private`):
-            wrappedValue = 0x0488ADE4
+            version = 0x0488ADE4
         case (.mainnet, .`public`):
-            wrappedValue = 0x0488B21E
+            version = 0x0488B21E
         case (.testnet, .`private`):
-            wrappedValue = 0x04358394
+            version = 0x04358394
         case (.testnet, .`public`):
-            wrappedValue = 0x043587CF
+            version = 0x043587CF
         }
     }
 }
