@@ -1,7 +1,7 @@
 import Foundation
 
 public protocol ChildKeySerializing {
-    func serializedKey(
+    func serializedChildKey(
         extendedKey: ExtendedKeyable,
         version: UInt32,
         depth: UInt8,
@@ -16,7 +16,7 @@ public struct ChildKeySerializer {
 
 // MARK: - ChildKeySerializing
 extension ChildKeySerializer: ChildKeySerializing {
-    public func serializedKey(
+    public func serializedChildKey(
         extendedKey: ExtendedKeyable,
         version: UInt32,
         depth: UInt8,

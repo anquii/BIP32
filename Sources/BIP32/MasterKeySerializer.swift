@@ -1,7 +1,7 @@
 import Foundation
 
 public protocol MasterKeySerializing {
-    func serializedKey(
+    func serializedMasterKey(
         extendedKey: ExtendedKeyable,
         version: UInt32
     ) throws -> SerializedKeyable
@@ -18,7 +18,7 @@ public struct MasterKeySerializer {
 
 // MARK: - MasterKeySerializing
 extension MasterKeySerializer: MasterKeySerializing {
-    public func serializedKey(
+    public func serializedMasterKey(
         extendedKey: ExtendedKeyable,
         version: UInt32
     ) throws -> SerializedKeyable {

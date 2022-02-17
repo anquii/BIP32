@@ -4,10 +4,6 @@ import CryptoSwift
 
 final class MasterKeySerializerTests: XCTestCase {
     private let masterKeyGenerator = MasterKeyGenerator()
-    private let bitcoinVersionContainer = BitcoinVersionContainer(
-        network: .mainnet,
-        keyAccessControl: .private
-    )
 
     private func sut() -> MasterKeySerializer {
         .init()
@@ -15,52 +11,52 @@ final class MasterKeySerializerTests: XCTestCase {
 
     func testGivenMasterKey_AndVersion_WhenSerialize_ThenNoErrorThrown() throws {
         XCTAssertNoThrow(
-            try serializedKey()
+            try serializedMasterKey()
         )
     }
 
-    func testGivenSerializedKey_WhenMainnet_AndPrivateAccessControl_AndGetVersion_ThenEqual() throws {
+    func testGivenSerializedMasterKey_WhenMainnet_AndPrivateAccessControl_AndGetVersion_ThenEqual() throws {
         XCTAssertEqual(
-            try serializedKey().version, 0x0488ADE4
+            try serializedMasterKey().version, 0x0488ADE4
         )
     }
 
-    func testGivenSerializedKey_WhenGetDepth_ThenEqual0() throws {
+    func testGivenSerializedMasterKey_WhenGetDepth_ThenEqual0() throws {
         XCTAssertEqual(
-            try serializedKey().depth, 0
+            try serializedMasterKey().depth, 0
         )
     }
 
-    func testGivenSerializedKey_WhenGetFingerprint_ThenEqual0() throws {
+    func testGivenSerializedMasterKey_WhenGetFingerprint_ThenEqual0() throws {
         XCTAssertEqual(
-            try serializedKey().fingerprint, 0
+            try serializedMasterKey().fingerprint, 0
         )
     }
 
-    func testGivenSerializedKey_WhenGetIndex_ThenEqual0() throws {
+    func testGivenSerializedMasterKey_WhenGetIndex_ThenEqual0() throws {
         XCTAssertEqual(
-            try serializedKey().index, 0
+            try serializedMasterKey().index, 0
         )
     }
 
-    func testGivenSerializedKey_WhenGetKeyPrefix_ThenEqual0() throws {
+    func testGivenSerializedMasterKey_WhenGetKeyPrefix_ThenEqual0() throws {
         XCTAssertEqual(
-            try serializedKey().key.first, 0
+            try serializedMasterKey().key.first, 0
         )
     }
 }
 
 // MARK: - Helpers
 extension MasterKeySerializerTests {
-    func serializedKey() throws -> SerializedKeyable {
+    func serializedMasterKey() throws -> SerializedKeyable {
         let masterKey = try masterKeyGenerator.masterKey(
             seed: testSeed()
         )
-        let serializedKey = try sut().serializedKey(
+        let serializedMasterKey = try sut().serializedMasterKey(
             extendedKey: masterKey,
-            version: bitcoinVersionContainer.version
+            version: 0x0488ADE4
         )
-        return serializedKey
+        return serializedMasterKey
     }
 
     func testSeed() -> Data {
