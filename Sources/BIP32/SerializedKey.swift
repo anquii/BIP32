@@ -1,4 +1,5 @@
 import Foundation
+import CryptoSwift
 
 public protocol SerializedKeyable {
     var data: Data { get }
@@ -10,38 +11,31 @@ public protocol SerializedKeyable {
     var key: Data { get }
 }
 
-public struct SerializedKey {
-    public var data: Data
+public struct SerializedKey: SerializedKeyable {
+    public let data: Data
+    public let version: UInt32
+    public let depth: UInt8
+    public let fingerprint: UInt32
+    public let index: UInt32
+    public let chainCode: Data
+    public let key: Data
 
-    public init(data: Data) {
+    public init(data: Data) throws {
+        guard
+            SerializedKeySize.range.contains(data.count),
+            let version = UInt32(data: data[ByteRange.version]),
+            let fingerprint = UInt32(data: data[ByteRange.fingerprint]),
+            let index = UInt32(data: data[ByteRange.index])
+        else {
+            throw KeyError.invalidKey
+        }
         self.data = data
-    }
-}
-
-// MARK: - SerializedKeyable
-extension SerializedKey: SerializedKeyable {
-    public var version: UInt32 {
-        .init(data: data[ByteRange.version])
-    }
-
-    public var depth: UInt8 {
-        data[ByteRange.depth]
-    }
-
-    public var fingerprint: UInt32 {
-        .init(data: data[ByteRange.fingerprint])
-    }
-
-    public var index: UInt32 {
-        .init(data: data[ByteRange.index])
-    }
-
-    public var chainCode: Data {
-        data[ByteRange.chainCode]
-    }
-
-    public var key: Data {
-        data[ByteRange.key]
+        self.version = version
+        self.fingerprint = fingerprint
+        self.index = index
+        depth = data[ByteRange.depth]
+        chainCode = data[ByteRange.chainCode]
+        key = data[ByteRange.key]
     }
 }
 
@@ -61,9 +55,10 @@ fileprivate extension SerializedKey {
 
 // MARK: - UInt32+Data
 fileprivate extension UInt32 {
-    init(data: Data) {
-        self = data.withUnsafeBytes {
-            $0.load(as: UInt32.self)
+    init?(data: Data) {
+        guard let value = Self(data.toHexString(), radix: 16) else {
+            return nil
         }
+        self = value
     }
 }

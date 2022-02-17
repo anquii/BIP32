@@ -32,10 +32,6 @@ extension MasterKeySerializer: MasterKeySerializing {
         data += Self.keyPrefix.bytes
         data += extendedKey.key
 
-        guard SerializedKeySize.range.contains(data.count) else {
-            throw KeyError.invalidKey
-        }
-
-        return SerializedKey(data: data)
+        return try SerializedKey(data: data)
     }
 }

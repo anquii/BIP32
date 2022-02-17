@@ -32,10 +32,6 @@ extension ChildKeySerializer: ChildKeySerializing {
         data += extendedKey.chainCode
         data += extendedKey.key
 
-        guard SerializedKeySize.range.contains(data.count) else {
-            throw KeyError.invalidKey
-        }
-
-        return SerializedKey(data: data)
+        return try SerializedKey(data: data)
     }
 }
