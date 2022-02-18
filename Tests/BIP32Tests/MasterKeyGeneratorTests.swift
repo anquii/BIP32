@@ -1,5 +1,4 @@
 import XCTest
-import CryptoSwift
 @testable import BIP32
 
 final class MasterKeyGeneratorTests: XCTestCase {
@@ -27,12 +26,8 @@ final class MasterKeyGeneratorTests: XCTestCase {
 }
 
 // MARK: - Helpers
-extension MasterKeyGeneratorTests {
+fileprivate extension MasterKeyGeneratorTests {
     func masterKey() throws -> ExtendedKeyable {
-        try sut().masterKey(seed: testSeed())
-    }
-
-    func testSeed() -> Data {
-        .init(hex: "000102030405060708090a0b0c0d0e0f")
+        try sut().masterKey(seed: TestVector.seed)
     }
 }

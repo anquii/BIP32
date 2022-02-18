@@ -36,7 +36,7 @@ final class KeyIndexHardenerTests: XCTestCase {
 }
 
 // MARK: - Helpers
-extension KeyIndexHardenerTests {
+fileprivate extension KeyIndexHardenerTests {
     func testValidIndex(_ index: UInt32, expectedIndexOutput: UInt32) throws {
         XCTAssertEqual(
             try sut().hardenedIndex(normalIndex: index),

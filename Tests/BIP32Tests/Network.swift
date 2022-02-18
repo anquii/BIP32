@@ -1,4 +1,4 @@
-public enum Network {
+enum Network {
     case mainnet
     case testnet
 }

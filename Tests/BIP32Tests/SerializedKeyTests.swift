@@ -57,7 +57,7 @@ final class SerializedKeyTests: XCTestCase {
 }
 
 // MARK: - Helpers
-extension SerializedKeyTests {
+fileprivate extension SerializedKeyTests {
     func validKey() throws -> SerializedKey {
         try sut(data: testData())
     }
@@ -72,8 +72,7 @@ extension SerializedKeyTests {
             """
             .components(separatedBy: .newlines)
             .joined()
-        return .init(
-            hex: hexEncodedData
-        )
+
+        return .init(hex: hexEncodedData)
     }
 }

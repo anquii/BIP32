@@ -1,7 +1,9 @@
-public struct BitcoinVersionContainer {
-    public let version: UInt32
+@testable import BIP32
 
-    public init(network: Network, keyAccessControl: KeyAccessControl) {
+struct BitcoinVersionContainer {
+    let version: UInt32
+
+    init(network: Network, keyAccessControl: KeyAccessControl) {
         switch (network, keyAccessControl) {
         case (.mainnet, .`private`):
             version = 0x0488ADE4

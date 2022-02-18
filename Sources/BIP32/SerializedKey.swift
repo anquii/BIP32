@@ -12,6 +12,9 @@ public protocol SerializedKeyable {
 }
 
 public struct SerializedKey: SerializedKeyable {
+    private static let sizeValidationRange = 77...78
+    static let capacity = 78
+
     public let data: Data
     public let version: UInt32
     public let depth: UInt8
@@ -22,7 +25,7 @@ public struct SerializedKey: SerializedKeyable {
 
     public init(data: Data) throws {
         guard
-            SerializedKeySize.range.contains(data.count),
+            Self.sizeValidationRange.contains(data.count),
             let version = UInt32(data: data[ByteRange.version]),
             let fingerprint = UInt32(data: data[ByteRange.fingerprint]),
             let index = UInt32(data: data[ByteRange.index])

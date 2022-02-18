@@ -114,7 +114,7 @@ final class KeyIndexValidatorTests: XCTestCase {
 }
 
 // MARK: - Helpers
-extension KeyIndexValidatorTests {
+fileprivate extension KeyIndexValidatorTests {
     func testValidIndex(_ index: UInt32, isHardened: Bool) {
         XCTAssertNoThrow(
             try sut().validateIndex(index, isHardened: isHardened)
