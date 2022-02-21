@@ -20,6 +20,11 @@ let package = Package(
             url: "https://github.com/GigaBitcoin/secp256k1.swift.git",
             .upToNextMajor(from: "0.4.0")
         ),
+        .package(
+            name: "RIPEMD160",
+            url: "https://github.com/anquii/RIPEMD160.git",
+            .upToNextMajor(from: "1.0.0")
+        ),
     ],
     targets: [
         .binaryTarget(
@@ -31,7 +36,8 @@ let package = Package(
             name: "BIP32",
             dependencies: [
                 "CryptoSwift",
-                "secp256k1"
+                "secp256k1",
+                "RIPEMD160"
             ]
         ),
         .testTarget(
