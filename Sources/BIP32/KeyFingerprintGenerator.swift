@@ -14,12 +14,10 @@ public struct KeyFingerprintGenerator {
 
 // MARK: - KeyFingerprintGenerating
 extension KeyFingerprintGenerator: KeyFingerprintGenerating {
-    public func fingerprint(publicKey: Data) throws -> UInt32 {
-        let hash = hash160(data: publicKey)[Self.byteRange]
-        guard let fingerprint = UInt32(data: hash) else {
-            throw KeyError.invalidKey
-        }
-        return fingerprint
+    public func fingerprint(publicKey: Data) -> UInt32 {
+        .init(
+            data: hash160(data: publicKey)[Self.byteRange]
+        )!
     }
 }
 
