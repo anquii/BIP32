@@ -28,6 +28,6 @@ final class MasterKeyGeneratorTests: XCTestCase {
 // MARK: - Helpers
 fileprivate extension MasterKeyGeneratorTests {
     func masterKey() throws -> ExtendedKeyable {
-        try sut().masterKey(seed: TestVector.seed)
+        try sut().masterKey(seed: seedTestData)
     }
 }

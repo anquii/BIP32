@@ -55,13 +55,3 @@ fileprivate extension SerializedKey {
         private init() {}
     }
 }
-
-// MARK: - UInt32+Data
-fileprivate extension UInt32 {
-    init?(data: Data) {
-        guard let value = Self(data.toHexString(), radix: 16) else {
-            return nil
-        }
-        self = value
-    }
-}

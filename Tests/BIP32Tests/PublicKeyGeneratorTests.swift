@@ -53,7 +53,7 @@ final class PublicKeyGeneratorTests: XCTestCase {
 // MARK: - Helpers
 fileprivate extension PublicKeyGeneratorTests {
     func publicKey(format: PublicKeyFormat = .compressed) throws -> ExtendedKeyable {
-        let extendedPrivateKey = try MasterKeyGenerator().masterKey(seed: TestVector.seed)
+        let extendedPrivateKey = try MasterKeyGenerator().masterKey(seed: seedTestData)
         return try sut().publicKey(extendedPrivateKey: extendedPrivateKey, format: format)
     }
 }
