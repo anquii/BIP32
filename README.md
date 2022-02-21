@@ -22,8 +22,8 @@ Add the following line to your `Package.swift` file:
 
 ## License
 
-BIP32 is licensed under the terms of the MIT license. See the [LICENSE](LICENSE) file for more information.
+`BIP32` is licensed under the terms of the MIT license. See the [LICENSE](LICENSE) file for more information.
 
 ## Acknowledgments
 
-In developing BIP32, [KevinVitale](https://github.com/KevinVitale)'s [WalletKit](https://github.com/KevinVitale/WalletKit) has been used as a reference implementation. In addition, BIP32 depends on [krzyzanowskim](https://github.com/krzyzanowskim)'s [CryptoSwift](https://github.com/krzyzanowskim/CryptoSwift) and [GigaBitcoin](https://github.com/GigaBitcoin)'s [secp256k1.swift](https://github.com/GigaBitcoin/secp256k1.swift) for crypto operations.
+In developing `BIP32`, [KevinVitale](https://github.com/KevinVitale)'s [WalletKit](https://github.com/KevinVitale/WalletKit) has been used as a reference implementation. In addition, `BIP32` depends on [krzyzanowskim](https://github.com/krzyzanowskim)'s [CryptoSwift](https://github.com/krzyzanowskim/CryptoSwift) and [GigaBitcoin](https://github.com/GigaBitcoin)'s [secp256k1.swift](https://github.com/GigaBitcoin/secp256k1.swift) for crypto operations.
