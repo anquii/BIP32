@@ -3,10 +3,10 @@ import CryptoSwift
 @testable import BIP32
 
 final class KeyFingerprintGeneratorTests: XCTestCase {
-    private var testVectors: [FingerprintTestVector]!
+    private var testVectors: [KeyFingerprintTestVector]!
 
     override func setUpWithError() throws {
-        testVectors = try JSONDecoder().decode([FingerprintTestVector].self, from: fingerprintTestVectorData)
+        testVectors = try JSONDecoder().decode([KeyFingerprintTestVector].self, from: keyFingerprintTestVectorData)
     }
 
     private func sut() -> KeyFingerprintGenerator {
@@ -20,7 +20,7 @@ final class KeyFingerprintGeneratorTests: XCTestCase {
     func testGivenVectorPublicKey_WhenGenerateFingerprint_ThenEqualVectorFingerprint() throws {
         for testVector in testVectors {
             let publicKey = Data(hex: testVector.hexEncodedPublicKey)
-            let hexEncodedFingerprint = try sut()
+            let hexEncodedFingerprint = sut()
                 .fingerprint(publicKey: publicKey)
                 .bytes
                 .toHexString()
