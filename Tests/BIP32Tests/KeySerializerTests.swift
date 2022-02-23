@@ -16,9 +16,9 @@ final class KeySerializerTests: XCTestCase {
 // MARK: - Helpers
 fileprivate extension KeySerializerTests {
     func serializedKey() throws -> SerializedKeyable {
-        let extendedKey = try MasterKeyGenerator().masterKey(seed: seedTestData)
+        let extendedKey = try MasterPrivateKeyGenerator().masterPrivateKey(seed: seedTestData)
         let versionContainer = BitcoinVersionContainer(network: .mainnet, keyAccessControl: .private)
-        let attributes = MasterKeyAttributes(version: versionContainer.version)
+        let attributes = MasterKeyAttributes(accessControl: .private, version: versionContainer.version)
         return try sut().serializedKey(extendedKey: extendedKey, attributes: attributes)
     }
 }

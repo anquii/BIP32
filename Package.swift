@@ -25,6 +25,11 @@ let package = Package(
             url: "https://github.com/anquii/RIPEMD160.git",
             .upToNextMajor(from: "1.0.0")
         ),
+        .package(
+            name: "Base58Check",
+            url: "https://github.com/anquii/Base58Check.git",
+            .upToNextMajor(from: "1.0.0")
+        ),
     ],
     targets: [
         .binaryTarget(
@@ -37,7 +42,8 @@ let package = Package(
             dependencies: [
                 "CryptoSwift",
                 "secp256k1",
-                "RIPEMD160"
+                "RIPEMD160",
+                "Base58Check"
             ]
         ),
         .testTarget(
