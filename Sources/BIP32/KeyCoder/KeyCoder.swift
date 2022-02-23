@@ -3,7 +3,7 @@ import Base58Check
 public struct KeyCoder {
     private let base58Check: Base58CheckCoding
 
-    public init(base58Check: Base58CheckCoding) {
+    public init(base58Check: Base58CheckCoding = Base58Check()) {
         self.base58Check = base58Check
     }
 }
