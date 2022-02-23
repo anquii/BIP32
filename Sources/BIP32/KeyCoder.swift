@@ -1,15 +1,5 @@
 import Base58Check
 
-public protocol KeyEncoding {
-    func encode(serializedKey: SerializedKeyable) -> String
-}
-
-public protocol KeyDecoding {
-    func decode(string: String) throws -> SerializedKeyable
-}
-
-public typealias KeyCoding = KeyEncoding & KeyDecoding
-
 public struct KeyCoder {
     private let base58Check: Base58CheckCoding
 
