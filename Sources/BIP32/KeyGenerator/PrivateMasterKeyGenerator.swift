@@ -1,19 +1,19 @@
 import Foundation
 import CryptoSwift
 
-public protocol MasterPrivateKeyGenerating {
-    func masterPrivateKey(seed: Data) throws -> ExtendedKeyable
+public protocol PrivateMasterKeyGenerating {
+    func privateMasterKey(seed: Data) throws -> ExtendedKeyable
 }
 
-public struct MasterPrivateKeyGenerator {
+public struct PrivateMasterKeyGenerator {
     private static let hmacSHA512Key = "Bitcoin seed"
 
     public init() {}
 }
 
-// MARK: - MasterPrivateKeyGenerating
-extension MasterPrivateKeyGenerator: MasterPrivateKeyGenerating {
-    public func masterPrivateKey(seed: Data) throws -> ExtendedKeyable {
+// MARK: - PrivateMasterKeyGenerating
+extension PrivateMasterKeyGenerator: PrivateMasterKeyGenerating {
+    public func privateMasterKey(seed: Data) throws -> ExtendedKeyable {
         let hmacSHA512 = HMAC(
             key: Self.hmacSHA512Key.bytes,
             variant: .sha2(.sha512)
@@ -30,15 +30,5 @@ extension MasterPrivateKeyGenerator: MasterPrivateKeyGenerating {
         } catch {
             throw KeyError.invalidKey
         }
-    }
-}
-
-// MARK: - Helpers
-fileprivate extension MasterPrivateKeyGenerator {
-    struct HMACSHA512ByteRange {
-        static let left = ..<32
-        static let right = 32...
-
-        private init() {}
     }
 }

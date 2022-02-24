@@ -13,7 +13,6 @@ public protocol SerializedKeyable {
 
 public struct SerializedKey: SerializedKeyable {
     private static let sizeValidationRange = 77...78
-    static let capacity = 78
 
     public let data: Data
     public let version: UInt32

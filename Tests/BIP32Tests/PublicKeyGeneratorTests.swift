@@ -6,14 +6,14 @@ final class PublicKeyGeneratorTests: XCTestCase {
         .init()
     }
 
-    func testGivenInvalidExtendedKey_AndCompressionFormat_WhenGenerate_ThenThrowError() {
-        let invalidExtendedKey = ExtendedKey(
+    func testGivenInvalidPrivateKey_AndCompressionFormat_WhenGenerate_ThenThrowError() {
+        let privateKey = ExtendedKey(
             key: .init(),
             chainCode: .init()
         )
         XCTAssertThrowsError(
             try sut().publicKey(
-                extendedPrivateKey: invalidExtendedKey,
+                privateKey: privateKey,
                 format: .compressed
             )
         )
@@ -53,7 +53,7 @@ final class PublicKeyGeneratorTests: XCTestCase {
 // MARK: - Helpers
 fileprivate extension PublicKeyGeneratorTests {
     func publicKey(format: PublicKeyFormat = .compressed) throws -> ExtendedKeyable {
-        let extendedPrivateKey = try MasterPrivateKeyGenerator().masterPrivateKey(seed: seedTestData)
-        return try sut().publicKey(extendedPrivateKey: extendedPrivateKey, format: format)
+        let privateKey = try PrivateMasterKeyGenerator().privateMasterKey(seed: seedTestData)
+        return try sut().publicKey(privateKey: privateKey, format: format)
     }
 }

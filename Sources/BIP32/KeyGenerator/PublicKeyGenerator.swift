@@ -2,7 +2,7 @@ import secp256k1
 
 public protocol PublicKeyGenerating {
     func publicKey(
-        extendedPrivateKey: ExtendedKeyable,
+        privateKey: ExtendedKeyable,
         format: PublicKeyFormat
     ) throws -> ExtendedKeyable
 }
@@ -14,21 +14,22 @@ public struct PublicKeyGenerator {
 // MARK: - PublicKeyGenerating
 extension PublicKeyGenerator: PublicKeyGenerating {
     public func publicKey(
-        extendedPrivateKey: ExtendedKeyable,
+        privateKey: ExtendedKeyable,
         format: PublicKeyFormat
     ) throws -> ExtendedKeyable {
         do {
-            let privateKey = try secp256k1.Signing.PrivateKey(
-                rawRepresentation: extendedPrivateKey.key,
-                format: secp256k1.Format(format)
-            )
-            let publicKey = privateKey
+            let publicKey = try secp256k1
+                .Signing
+                .PrivateKey(
+                    rawRepresentation: privateKey.key,
+                    format: secp256k1.Format(format)
+                )
                 .publicKey
                 .rawRepresentation
 
             return ExtendedKey(
                 key: publicKey,
-                chainCode: extendedPrivateKey.chainCode
+                chainCode: privateKey.chainCode
             )
         } catch {
             throw KeyError.invalidKey
