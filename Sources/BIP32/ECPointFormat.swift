@@ -1,4 +1,4 @@
-public enum PublicKeyFormat {
+public enum ECPointFormat {
     case compressed
     case uncompressed
 }

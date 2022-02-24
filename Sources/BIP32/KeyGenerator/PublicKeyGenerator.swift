@@ -3,7 +3,7 @@ import secp256k1
 public protocol PublicKeyGenerating {
     func publicKey(
         privateKey: ExtendedKeyable,
-        format: PublicKeyFormat
+        pointFormat: ECPointFormat
     ) throws -> ExtendedKeyable
 }
 
@@ -15,14 +15,14 @@ public struct PublicKeyGenerator {
 extension PublicKeyGenerator: PublicKeyGenerating {
     public func publicKey(
         privateKey: ExtendedKeyable,
-        format: PublicKeyFormat
+        pointFormat: ECPointFormat = .compressed
     ) throws -> ExtendedKeyable {
         do {
             let publicKey = try secp256k1
                 .Signing
                 .PrivateKey(
                     rawRepresentation: privateKey.key,
-                    format: secp256k1.Format(format)
+                    format: secp256k1.Format(pointFormat)
                 )
                 .publicKey
                 .rawRepresentation
@@ -33,18 +33,6 @@ extension PublicKeyGenerator: PublicKeyGenerating {
             )
         } catch {
             throw KeyError.invalidKey
-        }
-    }
-}
-
-// MARK: - secp256k1.Format+PublicKeyFormat
-fileprivate extension secp256k1.Format {
-    init(_ format: PublicKeyFormat) {
-        switch format {
-        case .compressed:
-            self = .compressed
-        case .uncompressed:
-            self = .uncompressed
         }
     }
 }

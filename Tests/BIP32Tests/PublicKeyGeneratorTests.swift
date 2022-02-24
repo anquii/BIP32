@@ -6,7 +6,7 @@ final class PublicKeyGeneratorTests: XCTestCase {
         .init()
     }
 
-    func testGivenInvalidPrivateKey_AndCompressionFormat_WhenGenerate_ThenThrowError() {
+    func testGivenInvalidPrivateKey_AndCompressedPointFormat_WhenGenerate_ThenThrowError() {
         let privateKey = ExtendedKey(
             key: .init(),
             chainCode: .init()
@@ -14,46 +14,46 @@ final class PublicKeyGeneratorTests: XCTestCase {
         XCTAssertThrowsError(
             try sut().publicKey(
                 privateKey: privateKey,
-                format: .compressed
+                pointFormat: .compressed
             )
         )
     }
 
-    func testGivenExtendedKey_AndCompressionFormat_WhenGenerate_ThenNoErrorThrown() {
+    func testGivenExtendedKey_AndCompressedPointFormat_WhenGenerate_ThenNoErrorThrown() {
         XCTAssertNoThrow(
             try publicKey()
         )
     }
 
-    func testGivenUncompressedFormat_WhenGenerate_AndCountKeyBytes_ThenEqual65() throws {
+    func testGivenUncompressedPointFormat_WhenGenerate_AndCountKeyBytes_ThenEqual65() throws {
         XCTAssertEqual(
-            try publicKey(format: .uncompressed).key.count, 65
+            try publicKey(pointFormat: .uncompressed).key.count, 65
         )
     }
 
-    func testGivenUncompressedFormat_WhenGenerate_AndCountChainCodeBytes_ThenEqual32() throws {
+    func testGivenUncompressedPointFormat_WhenGenerate_AndCountChainCodeBytes_ThenEqual32() throws {
         XCTAssertEqual(
-            try publicKey(format: .uncompressed).chainCode.count, 32
+            try publicKey(pointFormat: .uncompressed).chainCode.count, 32
         )
     }
 
-    func testGivenCompressedFormat_WhenGenerate_AndCountKeyBytes_ThenEqual33() throws {
+    func testGivenCompressedPointFormat_WhenGenerate_AndCountKeyBytes_ThenEqual33() throws {
         XCTAssertEqual(
-            try publicKey(format: .compressed).key.count, 33
+            try publicKey(pointFormat: .compressed).key.count, 33
         )
     }
 
-    func testGivenCompressedFormat_WhenGenerate_AndCountChainCodeBytes_ThenEqual32() throws {
+    func testGivenCompressedPointFormat_WhenGenerate_AndCountChainCodeBytes_ThenEqual32() throws {
         XCTAssertEqual(
-            try publicKey(format: .compressed).chainCode.count, 32
+            try publicKey(pointFormat: .compressed).chainCode.count, 32
         )
     }
 }
 
 // MARK: - Helpers
 fileprivate extension PublicKeyGeneratorTests {
-    func publicKey(format: PublicKeyFormat = .compressed) throws -> ExtendedKeyable {
+    func publicKey(pointFormat: ECPointFormat = .compressed) throws -> ExtendedKeyable {
         let privateKey = try PrivateMasterKeyGenerator().privateMasterKey(seed: seedTestData)
-        return try sut().publicKey(privateKey: privateKey, format: format)
+        return try sut().publicKey(privateKey: privateKey, pointFormat: pointFormat)
     }
 }

@@ -6,7 +6,7 @@ final class KeySerializerTests: XCTestCase {
         .init()
     }
 
-    func testGivenExtendedKey_AndAttributes_WhenSerialize_ThenNoErrorThrown() throws {
+    func testGivenExtendedKey_AndAttributes_WhenSerialize_ThenNoErrorThrown() {
         XCTAssertNoThrow(
             try serializedKey()
         )

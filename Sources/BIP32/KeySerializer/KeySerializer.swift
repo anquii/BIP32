@@ -30,7 +30,7 @@ extension KeySerializer: KeySerializing {
 
         data += attributes.version.bytes
         data += attributes.depth.bytes
-        data += attributes.parentFingerprint.bytes
+        data += attributes.parentKeyFingerprint.bytes
         data += attributes.index.bytes
         data += extendedKey.chainCode
         if isPrivateMasterKey || isHardenedPrivateChildKey {
