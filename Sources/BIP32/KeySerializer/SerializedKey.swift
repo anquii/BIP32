@@ -5,10 +5,9 @@ public protocol SerializedKeyable {
     var data: Data { get }
     var version: UInt32 { get }
     var depth: UInt8 { get }
-    var fingerprint: UInt32 { get }
+    var parentKeyFingerprint: UInt32 { get }
     var index: UInt32 { get }
-    var chainCode: Data { get }
-    var key: Data { get }
+    var extendedKey: ExtendedKeyable { get }
 }
 
 public struct SerializedKey: SerializedKeyable {
@@ -17,27 +16,28 @@ public struct SerializedKey: SerializedKeyable {
     public let data: Data
     public let version: UInt32
     public let depth: UInt8
-    public let fingerprint: UInt32
+    public let parentKeyFingerprint: UInt32
     public let index: UInt32
-    public let chainCode: Data
-    public let key: Data
+    public let extendedKey: ExtendedKeyable
 
     public init(data: Data) throws {
         guard
             Self.sizeValidationRange.contains(data.count),
             let version = UInt32(data: data[ByteRange.version]),
-            let fingerprint = UInt32(data: data[ByteRange.fingerprint]),
+            let parentKeyFingerprint = UInt32(data: data[ByteRange.parentKeyFingerprint]),
             let index = UInt32(data: data[ByteRange.index])
         else {
             throw KeyError.invalidKey
         }
         self.data = data
         self.version = version
-        self.fingerprint = fingerprint
+        self.parentKeyFingerprint = parentKeyFingerprint
         self.index = index
         depth = data[ByteRange.depth]
-        chainCode = data[ByteRange.chainCode]
-        key = data[ByteRange.key]
+        extendedKey = ExtendedKey(
+            key: data[ByteRange.key],
+            chainCode: data[ByteRange.chainCode]
+        )
     }
 }
 
@@ -46,7 +46,7 @@ fileprivate extension SerializedKey {
     struct ByteRange {
         static let version = ...3
         static let depth = 4
-        static let fingerprint = 5...8
+        static let parentKeyFingerprint = 5...8
         static let index = 9...12
         static let chainCode = 13...44
         static let key = 45...
