@@ -6,31 +6,31 @@ final class KeyIndexHardenerTests: XCTestCase {
         .init()
     }
 
-    func testGivenNormalIndex_AndShouldHarden_WhenInit_AndGetIndex_ThenHardenedIndex() throws {
+    func testGivenNormalIndex_WhenHardened_ThenExpectedIndexOutput() throws {
         try testValidIndex(
             0x1,
             expectedIndexOutput: 0x80000001
         )
     }
 
-    func testGivenNormalLowerBoundIndex_AndShouldHarden_WhenInit_AndGetIndex_ThenHardenedLowerBoundIndex() throws {
+    func testGivenNormalLowerBoundIndex_WhenHardened_ThenHardenedLowerBoundIndex() throws {
         try testValidIndex(
             KeyIndexRange.normal.lowerBound,
             expectedIndexOutput: KeyIndexRange.hardened.lowerBound
         )
     }
 
-    func testGivenNormalUpperBoundIndex_AndShouldHarden_WhenInit_AndGetIndex_ThenHardenedUpperBoundIndex() throws {
+    func testGivenNormalUpperBoundIndex_WhenHardened_ThenHardenedUpperBoundIndex() throws {
         try testValidIndex(
             KeyIndexRange.normal.upperBound,
             expectedIndexOutput: KeyIndexRange.hardened.upperBound
         )
     }
 
-    func testGivenHardenedIndex_AndShouldHarden_WhenInit_ThenThrowMemorySpaceExeededError() {
+    func testGivenHardenedIndex_WhenHardened_ThenThrowInvalidIndexError() {
         testInvalidIndex(
             0x80000001,
-            expectedError: .memorySpaceExceeded
+            expectedError: .invalidIndex
         )
     }
 }

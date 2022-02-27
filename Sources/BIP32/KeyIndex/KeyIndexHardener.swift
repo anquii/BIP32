@@ -9,13 +9,22 @@ public struct KeyIndexHardener {
 // MARK: - KeyIndexHardening
 extension KeyIndexHardener: KeyIndexHardening {
     public func hardenedIndex(normalIndex: UInt32) throws -> UInt32 {
-        let maxDistance = normalIndex.distance(to: KeyIndexRange.hardened.upperBound)
-        let hardenedBase = KeyIndexRange.hardened.lowerBound
+        try validateIndex(normalIndex, isHardened: false)
+        let hardenedIndex = normalIndex + KeyIndexRange.hardened.lowerBound
+        try validateIndex(hardenedIndex, isHardened: true)
+        return hardenedIndex
+    }
+}
 
-        if maxDistance >= hardenedBase {
-            return normalIndex + KeyIndexRange.hardened.lowerBound
-        } else {
-            throw KeyIndexError.memorySpaceExceeded
+// MARK: - Helpers
+fileprivate extension KeyIndexHardener {
+    func validateIndex(_ index: UInt32, isHardened: Bool) throws {
+        let indexRange = isHardened
+            ? KeyIndexRange.hardened
+            : KeyIndexRange.normal
+
+        guard indexRange.contains(index) else {
+            throw KeyIndexError.invalidIndex
         }
     }
 }
