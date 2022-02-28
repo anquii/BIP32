@@ -21,25 +21,25 @@ final class SerializedKeyTests: XCTestCase {
 
     func testGivenValidKey_WhenCountVersionBytes_ThenEqual4() throws {
         XCTAssertEqual(
-            try validKey().version.bytes.count, 4
+            try validKey().version.bytes().count, 4
         )
     }
 
     func testGivenValidKey_WhenCountDepthBytes_ThenEqual1() throws {
         XCTAssertEqual(
-            try validKey().depth.bytes.count, 1
+            try validKey().depth.bytes().count, 1
         )
     }
 
     func testGivenValidKey_WhenCountParentKeyFingerprintBytes_ThenEqual4() throws {
         XCTAssertEqual(
-            try validKey().parentKeyFingerprint.bytes.count, 4
+            try validKey().parentKeyFingerprint.bytes().count, 4
         )
     }
 
     func testGivenValidKey_WhenCountIndexBytes_ThenEqual4() throws {
         XCTAssertEqual(
-            try validKey().index.bytes.count, 4
+            try validKey().index.bytes(order: .bigEndian).count, 4
         )
     }
 

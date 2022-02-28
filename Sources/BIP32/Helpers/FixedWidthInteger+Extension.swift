@@ -9,7 +9,20 @@ extension FixedWidthInteger {
         self = value
     }
 
-    var bytes: [UInt8] {
-        withUnsafeBytes(of: byteSwapped, Array.init)
+    func bytes(order: ByteOrder = .`default`) -> [UInt8] {
+        let representation: Self
+
+        switch order {
+        case .`default`:
+            representation = self
+        case .bigEndian:
+            representation = bigEndian
+        case .littleEndian:
+            representation = littleEndian
+        case .byteSwapped:
+            representation = byteSwapped
+        }
+
+        return withUnsafeBytes(of: representation, Array.init)
     }
 }
