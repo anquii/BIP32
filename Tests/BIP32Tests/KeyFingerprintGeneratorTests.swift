@@ -20,11 +20,13 @@ final class KeyFingerprintGeneratorTests: XCTestCase {
     func testGivenVectorPublicKey_WhenGenerateFingerprint_ThenEqualVectorFingerprint() throws {
         for testVector in testVectors {
             let publicKey = Data(hex: testVector.hexEncodedPublicKey)
-            let hexEncodedFingerprint = sut()
+            let fingerprintBytes = sut()
                 .fingerprint(publicKey: publicKey)
-                .bytes
-                .toHexString()
-            XCTAssertEqual(hexEncodedFingerprint, testVector.hexEncodedPublicKeyFingerprint)
+                .bytes()
+            let expectedFingerprintBytes = UInt32(
+                data: Data(hex: testVector.hexEncodedPublicKeyFingerprint)
+            )!.bytes(order: .littleEndian)
+            XCTAssertEqual(fingerprintBytes, expectedFingerprintBytes)
         }
     }
 }
