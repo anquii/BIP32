@@ -1,5 +1,6 @@
 import Foundation
 import CryptoSwift
+import BigInt
 
 public protocol PrivateMasterKeyGenerating {
     func privateMasterKey(seed: Data) throws -> ExtendedKeyable
@@ -20,12 +21,17 @@ extension PrivateMasterKeyGenerator: PrivateMasterKeyGenerating {
         )
         do {
             let hmacSHA512Bytes = try hmacSHA512.authenticate(seed.bytes)
-            let key = hmacSHA512Bytes[HMACSHA512ByteRange.left]
-            let chainCode = hmacSHA512Bytes[HMACSHA512ByteRange.right]
+            let key = Data(hmacSHA512Bytes[HMACSHA512ByteRange.left])
+            let chainCode = Data(hmacSHA512Bytes[HMACSHA512ByteRange.right])
+
+            let base256Key = BigUInt(key)
+            guard !base256Key.isZero, base256Key < .secp256k1CurveOrder else {
+                throw KeyError.invalidKey
+            }
 
             return ExtendedKey(
-                key: Data(key),
-                chainCode: Data(chainCode)
+                key: base256Key.serialize(),
+                chainCode: chainCode
             )
         } catch {
             throw KeyError.invalidKey
