@@ -25,7 +25,7 @@ final class KeyFingerprintGeneratorTests: XCTestCase {
                 .bytes()
             let expectedFingerprintBytes = UInt32(
                 data: Data(hex: testVector.hexEncodedPublicKeyFingerprint)
-            )!.bytes(order: .littleEndian)
+            )!.bytes()
             XCTAssertEqual(fingerprintBytes, expectedFingerprintBytes)
         }
     }
