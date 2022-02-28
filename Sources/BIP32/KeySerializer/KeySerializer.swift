@@ -23,9 +23,9 @@ extension KeySerializer: KeySerializing {
         var data = Data(capacity: Self.capacity)
 
         let isPrivateMasterKey = attributes.depth == 0
-            && attributes.accessControl == .private
+            && attributes.accessControl == .`private`
         let isHardenedPrivateChildKey = attributes.depth != 0
-            && attributes.accessControl == .private
+            && attributes.accessControl == .`private`
             && KeyIndexRange.hardened.contains(attributes.index)
 
         data += attributes.version.bytes
