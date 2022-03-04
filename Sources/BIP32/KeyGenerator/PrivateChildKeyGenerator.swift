@@ -1,6 +1,7 @@
 import Foundation
 import secp256k1
 import CryptoSwift
+import BigInt
 
 public protocol PrivateChildKeyGenerating {
     func privateChildKey(
@@ -26,7 +27,7 @@ extension PrivateChildKeyGenerator: PrivateChildKeyGenerating {
         let keyBytes: [UInt8]
 
         if KeyIndexRange.hardened.contains(index) {
-            keyBytes = Self.keyPrefix.bytes + privateParentKey.key.bytes
+            keyBytes = Self.keyPrefix.bytes() + privateParentKey.key
         } else {
             keyBytes = try secp256k1
                 .Signing
@@ -44,14 +45,21 @@ extension PrivateChildKeyGenerator: PrivateChildKeyGenerating {
             variant: .sha2(.sha512)
         )
         do {
-            let bytes = keyBytes + index.bytes
+            let bytes = keyBytes + index.bytes(order: .bigEndian)
             let hmacSHA512Bytes = try hmacSHA512.authenticate(bytes)
-            let key = hmacSHA512Bytes[HMACSHA512ByteRange.left]
-            let chainCode = hmacSHA512Bytes[HMACSHA512ByteRange.right]
+            let key = Data(hmacSHA512Bytes[HMACSHA512ByteRange.left])
+            let chainCode = Data(hmacSHA512Bytes[HMACSHA512ByteRange.right])
+
+            let base256Key = BigUInt(key)
+            let base256ParentKey = BigUInt(privateParentKey.key)
+            let computedChildKey = (base256Key + base256ParentKey) % .secp256k1CurveOrder
+            guard !computedChildKey.isZero, base256Key < .secp256k1CurveOrder else {
+                throw KeyError.invalidKey
+            }
 
             return ExtendedKey(
-                key: Data(key),
-                chainCode: Data(chainCode)
+                key: computedChildKey.serialize(),
+                chainCode: chainCode
             )
         } catch {
             throw KeyError.invalidKey
