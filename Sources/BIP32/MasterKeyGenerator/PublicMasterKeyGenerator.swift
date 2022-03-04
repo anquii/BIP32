@@ -1,32 +1,27 @@
 import secp256k1
 
-public protocol PublicKeyGenerating {
+public protocol PublicMasterKeyGenerating {
     func publicKey(
         privateKey: ExtendedKeyable,
         pointFormat: ECPointFormat
     ) throws -> ExtendedKeyable
 }
 
-public struct PublicKeyGenerator {
+public struct PublicMasterKeyGenerator {
     public init() {}
 }
 
-// MARK: - PublicKeyGenerating
-extension PublicKeyGenerator: PublicKeyGenerating {
+// MARK: - PublicMasterKeyGenerating
+extension PublicMasterKeyGenerator: PublicMasterKeyGenerating {
     public func publicKey(
         privateKey: ExtendedKeyable,
         pointFormat: ECPointFormat = .compressed
     ) throws -> ExtendedKeyable {
         do {
-            let publicKey = try secp256k1
-                .Signing
-                .PrivateKey(
-                    rawRepresentation: privateKey.key,
-                    format: secp256k1.Format(pointFormat)
-                )
-                .publicKey
-                .rawRepresentation
-
+            let publicKey = try secp256k1.serializedPoint(
+                data: privateKey.key,
+                format: pointFormat
+            )
             return ExtendedKey(
                 key: publicKey,
                 chainCode: privateKey.chainCode

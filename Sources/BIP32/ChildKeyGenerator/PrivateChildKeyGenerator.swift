@@ -29,15 +29,10 @@ extension PrivateChildKeyGenerator: PrivateChildKeyGenerating {
         if KeyIndexRange.hardened.contains(index) {
             keyBytes = Self.keyPrefix.bytes + privateParentKey.key
         } else {
-            keyBytes = try secp256k1
-                .Signing
-                .PrivateKey(
-                    rawRepresentation: privateParentKey.key,
-                    format: secp256k1.Format(pointFormat)
-                )
-                .publicKey
-                .rawRepresentation
-                .bytes
+            keyBytes = try secp256k1.serializedPoint(
+                data: privateParentKey.key,
+                format: pointFormat
+            ).bytes
         }
 
         let hmacSHA512 = HMAC(
