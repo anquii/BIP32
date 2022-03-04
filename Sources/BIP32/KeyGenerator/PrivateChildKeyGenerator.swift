@@ -27,7 +27,7 @@ extension PrivateChildKeyGenerator: PrivateChildKeyGenerating {
         let keyBytes: [UInt8]
 
         if KeyIndexRange.hardened.contains(index) {
-            keyBytes = Self.keyPrefix.bytes() + privateParentKey.key
+            keyBytes = Self.keyPrefix.bytes + privateParentKey.key
         } else {
             keyBytes = try secp256k1
                 .Signing
@@ -45,7 +45,7 @@ extension PrivateChildKeyGenerator: PrivateChildKeyGenerating {
             variant: .sha2(.sha512)
         )
         do {
-            let bytes = keyBytes + index.bytes(order: .bigEndian)
+            let bytes = keyBytes + index.bytes
             let hmacSHA512Bytes = try hmacSHA512.authenticate(bytes)
             let key = Data(hmacSHA512Bytes[HMACSHA512ByteRange.left])
             let chainCode = Data(hmacSHA512Bytes[HMACSHA512ByteRange.right])

@@ -28,13 +28,13 @@ extension KeySerializer: KeySerializing {
             && attributes.accessControl == .`private`
             && KeyIndexRange.hardened.contains(attributes.index)
 
-        data += attributes.version.bytes()
-        data += attributes.depth.bytes()
-        data += attributes.parentKeyFingerprint.bytes()
-        data += attributes.index.bytes(order: .bigEndian)
+        data += attributes.version.bytes
+        data += attributes.depth.bytes
+        data += attributes.parentKeyFingerprint.bytes
+        data += attributes.index.bytes
         data += extendedKey.chainCode
         if isPrivateMasterKey || isHardenedPrivateChildKey {
-            data += Self.keyPrefix.bytes()
+            data += Self.keyPrefix.bytes
         }
         data += extendedKey.key
 

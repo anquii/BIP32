@@ -22,10 +22,10 @@ final class KeyFingerprintGeneratorTests: XCTestCase {
             let publicKey = Data(hex: testVector.hexEncodedPublicKey)
             let fingerprintBytes = sut()
                 .fingerprint(publicKey: publicKey)
-                .bytes()
+                .bytes
             let expectedFingerprintBytes = UInt32(
                 data: Data(hex: testVector.hexEncodedPublicKeyFingerprint)
-            )!.bytes()
+            )!.bytes
             XCTAssertEqual(fingerprintBytes, expectedFingerprintBytes)
         }
     }

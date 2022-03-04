@@ -20,8 +20,7 @@ extension KeyCoder: KeyDecoding {
     public func decode(string: String) throws -> SerializedKeyable {
         do {
             let decodedData = try base58Check.decode(string: string)
-            let serializedKey = try SerializedKey(data: decodedData)
-            return serializedKey
+            return try SerializedKey(data: decodedData)
         } catch {
             throw KeyError.invalidKey
         }
