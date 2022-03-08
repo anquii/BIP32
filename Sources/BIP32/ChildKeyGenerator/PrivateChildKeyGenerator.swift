@@ -27,7 +27,7 @@ extension PrivateChildKeyGenerator: PrivateChildKeyGenerating {
         let keyBytes: [UInt8]
 
         if KeyIndexRange.hardened.contains(index) {
-            keyBytes = Self.keyPrefix.bytes + privateParentKey.key
+            keyBytes = Self.keyPrefix.bytes + privateParentKey.key.bytes
         } else {
             keyBytes = try secp256k1.serializedPoint(
                 data: privateParentKey.key,

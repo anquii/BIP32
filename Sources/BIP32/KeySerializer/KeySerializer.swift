@@ -22,18 +22,12 @@ extension KeySerializer: KeySerializing {
     ) throws -> SerializedKeyable {
         var data = Data(capacity: Self.capacity)
 
-        let isPrivateMasterKey = attributes.depth == 0
-            && attributes.accessControl == .`private`
-        let isHardenedPrivateChildKey = attributes.depth != 0
-            && attributes.accessControl == .`private`
-            && KeyIndexRange.hardened.contains(attributes.index)
-
         data += attributes.version.bytes
         data += attributes.depth.bytes
         data += attributes.parentKeyFingerprint.bytes
         data += attributes.index.bytes
         data += extendedKey.chainCode
-        if isPrivateMasterKey || isHardenedPrivateChildKey {
+        if attributes.accessControl == .`private` {
             data += Self.keyPrefix.bytes
         }
         data += extendedKey.key
