@@ -54,28 +54,48 @@ extension PublicChildKeyGenerator: PublicChildKeyGenerating {
             variant: .sha2(.sha512)
         )
         do {
-            let publicKey = try secp256k1.serializedPoint(
-                data: parentPublicKey.key,
-                format: pointFormat
-            )
-            let bytes = publicKey.bytes + index.bytes
+            let bytes = parentPublicKey.key.bytes + index.bytes
             let hmacSHA512Bytes = try hmacSHA512.authenticate(bytes)
             let key = Data(hmacSHA512Bytes[HMACSHA512ByteRange.left])
             let chainCode = Data(hmacSHA512Bytes[HMACSHA512ByteRange.right])
 
-            let base256Key = BigUInt(key)
-            let serializedPoint = try secp256k1.serializedPoint(
-                data: base256Key.serialize(),
-                format: pointFormat
-            )
-
-            let computedChildKey = serializedPoint + parentPublicKey.key
-            guard base256Key < .secp256k1CurveOrder else {
+            guard
+                BigUInt(key) < .secp256k1CurveOrder,
+                let context = secp256k1_context_create(secp256k1.Context.none.rawValue)
+            else {
                 throw KeyError.invalidKey
             }
 
+            var publicKey = secp256k1_pubkey()
+            let publicKeyFormat = secp256k1.Format(pointFormat)
+            var publicKeyLength = publicKeyFormat.length
+            var publicKeyBytes = [UInt8](repeating: 0, count: publicKeyLength)
+
+            guard
+                secp256k1_ec_pubkey_parse(
+                    context, &publicKey,
+                    parentPublicKey.key.bytes,
+                    parentPublicKey.key.count
+                ) == 1,
+                secp256k1_ec_pubkey_tweak_add(
+                    context,
+                    &publicKey,
+                    key.bytes
+                ) == 1,
+                secp256k1_ec_pubkey_serialize(
+                    context,
+                    &publicKeyBytes,
+                    &publicKeyLength,
+                    &publicKey,
+                    publicKeyFormat.rawValue
+                ) == 1
+            else {
+                throw KeyError.invalidKey
+            }
+            secp256k1_context_destroy(context)
+
             return ExtendedKey(
-                key: computedChildKey,
+                key: Data(publicKeyBytes),
                 chainCode: chainCode
             )
         } catch {
