@@ -70,8 +70,18 @@ extension PublicChildKeyGenerator: PublicChildKeyGenerating {
             let publicKeyFormat = secp256k1.Format(pointFormat)
             var publicKeyLength = publicKeyFormat.length
             var publicKeyBytes = [UInt8](repeating: 0, count: publicKeyLength)
+            var randomBytes = [UInt8](repeating: 0, count: 32)
 
             guard
+                SecRandomCopyBytes(
+                    kSecRandomDefault,
+                    randomBytes.count,
+                    &randomBytes
+                ) == errSecSuccess,
+                secp256k1_context_randomize(
+                    context,
+                    randomBytes
+                ) == 1,
                 secp256k1_ec_pubkey_parse(
                     context, &publicKey,
                     parentPublicKey.key.bytes,
