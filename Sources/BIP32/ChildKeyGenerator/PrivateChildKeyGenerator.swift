@@ -45,10 +45,10 @@ extension PrivateChildKeyGenerator: PrivateChildKeyGenerating {
             let key = Data(hmacSHA512Bytes[HMACSHA512ByteRange.left])
             let chainCode = Data(hmacSHA512Bytes[HMACSHA512ByteRange.right])
 
-            let base256Key = BigUInt(key)
-            let base256ParentKey = BigUInt(privateParentKey.key)
-            let computedChildKey = (base256Key + base256ParentKey) % .secp256k1CurveOrder
-            guard !computedChildKey.isZero, base256Key < .secp256k1CurveOrder else {
+            let bigIntegerKey = BigUInt(key)
+            let bigIntegerParentKey = BigUInt(privateParentKey.key)
+            let computedChildKey = (bigIntegerKey + bigIntegerParentKey) % .secp256k1CurveOrder
+            guard !computedChildKey.isZero, bigIntegerKey < .secp256k1CurveOrder else {
                 throw KeyError.invalidKey
             }
 

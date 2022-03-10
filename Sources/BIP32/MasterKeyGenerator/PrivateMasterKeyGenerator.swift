@@ -24,13 +24,13 @@ extension PrivateMasterKeyGenerator: PrivateMasterKeyGenerating {
             let key = Data(hmacSHA512Bytes[HMACSHA512ByteRange.left])
             let chainCode = Data(hmacSHA512Bytes[HMACSHA512ByteRange.right])
 
-            let base256Key = BigUInt(key)
-            guard !base256Key.isZero, base256Key < .secp256k1CurveOrder else {
+            let bigIntegerKey = BigUInt(key)
+            guard !bigIntegerKey.isZero, bigIntegerKey < .secp256k1CurveOrder else {
                 throw KeyError.invalidKey
             }
 
             return ExtendedKey(
-                key: base256Key.serialize(),
+                key: bigIntegerKey.serialize(),
                 chainCode: chainCode
             )
         } catch {
