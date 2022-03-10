@@ -7,13 +7,13 @@ final class SerializedKeyTests: XCTestCase {
         try .init(data: data)
     }
 
-    func testGivenInvalidData_WhenInit_ThenThrowError() {
+    func testGivenData_WithInvalidByteCount_WhenInit_ThenThrowError() {
         XCTAssertThrowsError(
             try sut(data: .init())
         )
     }
 
-    func testGivenValidData_WhenInit_ThenNoErrorThrown() {
+    func testGivenData_WithValidByteCount_WhenInit_ThenNoErrorThrown() {
         XCTAssertNoThrow(
             try sut(data: testData())
         )
