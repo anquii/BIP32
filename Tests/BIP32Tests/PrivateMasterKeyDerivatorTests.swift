@@ -7,19 +7,19 @@ final class PrivateMasterKeyDerivatorTests: XCTestCase {
         .init()
     }
 
-    func testGivenSeed_WhenDerive_ThenNoErrorThrown() {
+    func testGivenSeed_WhenDerivate_ThenNoErrorThrown() {
         XCTAssertNoThrow(
             try privateMasterKey()
         )
     }
 
-    func testGivenSeed_WhenDerive_AndCountKeyBytes_ThenEqual32() throws {
+    func testGivenSeed_WhenDerivate_AndCountKeyBytes_ThenEqual32() throws {
         XCTAssertEqual(
             try privateMasterKey().key.count, 32
         )
     }
 
-    func testGivenSeed_WhenDerive_AndCountChainCodeBytes_ThenEqual32() throws {
+    func testGivenSeed_WhenDerivate_AndCountChainCodeBytes_ThenEqual32() throws {
         XCTAssertEqual(
             try privateMasterKey().chainCode.count, 32
         )

@@ -6,7 +6,7 @@ final class PublicMasterKeyDerivatorTests: XCTestCase {
         .init()
     }
 
-    func testGivenInvalidPrivateKey_AndCompressedPointFormat_WhenDerive_ThenThrowError() {
+    func testGivenInvalidPrivateKey_AndCompressedPointFormat_WhenDerivate_ThenThrowError() {
         let privateKey = ExtendedKey(
             key: .init(),
             chainCode: .init()
@@ -19,31 +19,31 @@ final class PublicMasterKeyDerivatorTests: XCTestCase {
         )
     }
 
-    func testGivenExtendedKey_AndCompressedPointFormat_WhenDerive_ThenNoErrorThrown() {
+    func testGivenExtendedKey_AndCompressedPointFormat_WhenDerivate_ThenNoErrorThrown() {
         XCTAssertNoThrow(
             try publicKey()
         )
     }
 
-    func testGivenUncompressedPointFormat_WhenDerive_AndCountKeyBytes_ThenEqual65() throws {
+    func testGivenUncompressedPointFormat_WhenDerivate_AndCountKeyBytes_ThenEqual65() throws {
         XCTAssertEqual(
             try publicKey(pointFormat: .uncompressed).key.count, 65
         )
     }
 
-    func testGivenUncompressedPointFormat_WhenDerive_AndCountChainCodeBytes_ThenEqual32() throws {
+    func testGivenUncompressedPointFormat_WhenDerivate_AndCountChainCodeBytes_ThenEqual32() throws {
         XCTAssertEqual(
             try publicKey(pointFormat: .uncompressed).chainCode.count, 32
         )
     }
 
-    func testGivenCompressedPointFormat_WhenDerive_AndCountKeyBytes_ThenEqual33() throws {
+    func testGivenCompressedPointFormat_WhenDerivate_AndCountKeyBytes_ThenEqual33() throws {
         XCTAssertEqual(
             try publicKey(pointFormat: .compressed).key.count, 33
         )
     }
 
-    func testGivenCompressedPointFormat_WhenDerive_AndCountChainCodeBytes_ThenEqual32() throws {
+    func testGivenCompressedPointFormat_WhenDerivate_AndCountChainCodeBytes_ThenEqual32() throws {
         XCTAssertEqual(
             try publicKey(pointFormat: .compressed).chainCode.count, 32
         )
