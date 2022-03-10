@@ -1,8 +1,8 @@
 import XCTest
 @testable import BIP32
 
-final class PublicMasterKeyGeneratorTests: XCTestCase {
-    private func sut() -> PublicMasterKeyGenerator {
+final class PublicMasterKeyDerivatorTests: XCTestCase {
+    private func sut() -> PublicMasterKeyDerivator {
         .init()
     }
 
@@ -51,9 +51,9 @@ final class PublicMasterKeyGeneratorTests: XCTestCase {
 }
 
 // MARK: - Helpers
-fileprivate extension PublicMasterKeyGeneratorTests {
+fileprivate extension PublicMasterKeyDerivatorTests {
     func publicKey(pointFormat: ECPointFormat = .compressed) throws -> ExtendedKeyable {
-        let privateKey = try PrivateMasterKeyGenerator().privateMasterKey(seed: seedTestData)
+        let privateKey = try PrivateMasterKeyDerivator().privateMasterKey(seed: seedTestData)
         return try sut().publicKey(privateKey: privateKey, pointFormat: pointFormat)
     }
 }

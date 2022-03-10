@@ -2,8 +2,8 @@ import XCTest
 import Base58Check
 @testable import BIP32
 
-final class PrivateMasterKeyGeneratorTests: XCTestCase {
-    private func sut() -> PrivateMasterKeyGenerator {
+final class PrivateMasterKeyDerivatorTests: XCTestCase {
+    private func sut() -> PrivateMasterKeyDerivator {
         .init()
     }
 
@@ -27,7 +27,7 @@ final class PrivateMasterKeyGeneratorTests: XCTestCase {
 }
 
 // MARK: - Helpers
-fileprivate extension PrivateMasterKeyGeneratorTests {
+fileprivate extension PrivateMasterKeyDerivatorTests {
     func privateMasterKey() throws -> ExtendedKeyable {
         try sut().privateMasterKey(seed: seedTestData)
     }

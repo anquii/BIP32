@@ -3,7 +3,7 @@ import secp256k1
 import CryptoSwift
 import BigInt
 
-public protocol PublicChildKeyGenerating {
+public protocol PublicChildKeyDerivating {
     func publicKey(
         privateChildKey: ExtendedKeyable,
         pointFormat: ECPointFormat
@@ -16,12 +16,12 @@ public protocol PublicChildKeyGenerating {
     ) throws -> ExtendedKeyable
 }
 
-public struct PublicChildKeyGenerator {
+public struct PublicChildKeyDerivator {
     public init() {}
 }
 
-// MARK: - PublicChildKeyGenerating
-extension PublicChildKeyGenerator: PublicChildKeyGenerating {
+// MARK: - PublicChildKeyDerivating
+extension PublicChildKeyDerivator: PublicChildKeyDerivating {
     public func publicKey(
         privateChildKey: ExtendedKeyable,
         pointFormat: ECPointFormat = .compressed

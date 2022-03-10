@@ -2,18 +2,18 @@ import Foundation
 import CryptoSwift
 import BigInt
 
-public protocol PrivateMasterKeyGenerating {
+public protocol PrivateMasterKeyDerivating {
     func privateMasterKey(seed: Data) throws -> ExtendedKeyable
 }
 
-public struct PrivateMasterKeyGenerator {
+public struct PrivateMasterKeyDerivator {
     private static let hmacSHA512Key = "Bitcoin seed"
 
     public init() {}
 }
 
-// MARK: - PrivateMasterKeyGenerating
-extension PrivateMasterKeyGenerator: PrivateMasterKeyGenerating {
+// MARK: - PrivateMasterKeyDerivating
+extension PrivateMasterKeyDerivator: PrivateMasterKeyDerivating {
     public func privateMasterKey(seed: Data) throws -> ExtendedKeyable {
         let hmacSHA512 = HMAC(
             key: Self.hmacSHA512Key.bytes,

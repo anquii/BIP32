@@ -2,14 +2,14 @@ import XCTest
 import CryptoSwift
 @testable import BIP32
 
-final class KeyFingerprintGeneratorTests: XCTestCase {
+final class KeyFingerprintDerivatorTests: XCTestCase {
     private var testVectors: [KeyFingerprintTestVector]!
 
     override func setUpWithError() throws {
         testVectors = try JSONDecoder().decode([KeyFingerprintTestVector].self, from: keyFingerprintTestVectorData)
     }
 
-    private func sut() -> KeyFingerprintGenerator {
+    private func sut() -> KeyFingerprintDerivator {
         .init()
     }
 

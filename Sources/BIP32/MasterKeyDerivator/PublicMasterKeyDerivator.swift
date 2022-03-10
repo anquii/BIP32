@@ -1,18 +1,18 @@
 import secp256k1
 
-public protocol PublicMasterKeyGenerating {
+public protocol PublicMasterKeyDerivating {
     func publicKey(
         privateKey: ExtendedKeyable,
         pointFormat: ECPointFormat
     ) throws -> ExtendedKeyable
 }
 
-public struct PublicMasterKeyGenerator {
+public struct PublicMasterKeyDerivator {
     public init() {}
 }
 
-// MARK: - PublicMasterKeyGenerating
-extension PublicMasterKeyGenerator: PublicMasterKeyGenerating {
+// MARK: - PublicMasterKeyDerivating
+extension PublicMasterKeyDerivator: PublicMasterKeyDerivating {
     public func publicKey(
         privateKey: ExtendedKeyable,
         pointFormat: ECPointFormat = .compressed
