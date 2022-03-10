@@ -17,7 +17,7 @@ final class KeyFingerprintDerivatorTests: XCTestCase {
         XCTAssertEqual(testVectors.count, 5)
     }
 
-    func testGivenVectorPublicKey_WhenGenerateFingerprint_ThenEqualVectorFingerprint() throws {
+    func testGivenVectorPublicKey_WhenDeriveFingerprint_ThenEqualVectorFingerprint() throws {
         for testVector in testVectors {
             let publicKey = Data(hex: testVector.hexEncodedPublicKey)
             let fingerprintBytes = sut()
