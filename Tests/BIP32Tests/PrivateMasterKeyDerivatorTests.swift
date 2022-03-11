@@ -1,6 +1,5 @@
 import XCTest
 import CryptoSwift
-import Base58Check
 @testable import BIP32
 
 final class PrivateMasterKeyDerivatorTests: XCTestCase {
@@ -12,7 +11,7 @@ final class PrivateMasterKeyDerivatorTests: XCTestCase {
 
     override func setUpWithError() throws {
         keyVersion = BitcoinVersionContainer(network: .mainnet, keyAccessControl: .`private`).version
-        keyAttributes = MasterKeyAttributes(accessControl: .`private`, version: keyVersion)
+        keyAttributes = .init(accessControl: .`private`, version: keyVersion)
         keySerializer = .init()
         keyCoder = .init()
         testVectors = try JSONDecoder().decode([MasterKeyTestVector].self, from: privateMasterKeyTestVectorData)
@@ -20,6 +19,10 @@ final class PrivateMasterKeyDerivatorTests: XCTestCase {
 
     private func sut() -> PrivateMasterKeyDerivator {
         .init()
+    }
+
+    func testGivenVectors_WhenCount_ThenEqual4() {
+        XCTAssertEqual(testVectors.count, 4)
     }
 
     func testGivenSeed_WhenDerivateKey_AndCountKeyBytes_ThenEqual31_Or32() throws {
