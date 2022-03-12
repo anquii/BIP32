@@ -27,6 +27,41 @@ final class PublicMasterKeyDerivatorTests: XCTestCase {
         XCTAssertEqual(testVectors.count, 4)
     }
 
+    func testGivenCompressedPointFormat_WhenDerivateKey_AndCountKeyBytes_ThenEqual33() throws {
+        let sut = self.sut()
+
+        for testVector in testVectors {
+            let seed = Data(hex: testVector.hexEncodedSeed)
+            let privateKey = try privateKeyDerivator.privateMasterKey(seed: seed)
+            let publicKey = try sut.publicKey(privateKey: privateKey, pointFormat: .compressed)
+            XCTAssertEqual(publicKey.key.count, 33)
+        }
+    }
+
+    func testGivenCompressedPointFormat_WhenDerivateKey_AndCountChainCodeBytes_ThenEqual32() throws {
+        let sut = self.sut()
+
+        for testVector in testVectors {
+            let seed = Data(hex: testVector.hexEncodedSeed)
+            let privateKey = try privateKeyDerivator.privateMasterKey(seed: seed)
+            let publicKey = try sut.publicKey(privateKey: privateKey, pointFormat: .compressed)
+            XCTAssertEqual(publicKey.chainCode.count, 32)
+        }
+    }
+
+    func testGivenVectorSeed_WhenDerivateKey_ThenEqualVectorKey() throws {
+        let sut = self.sut()
+
+        for testVector in testVectors {
+            let seed = Data(hex: testVector.hexEncodedSeed)
+            let privateKey = try privateKeyDerivator.privateMasterKey(seed: seed)
+            let publicKey = try sut.publicKey(privateKey: privateKey, pointFormat: .compressed)
+            let serializedKey = try keySerializer.serializedKey(extendedKey: publicKey, attributes: keyAttributes)
+            let encodedKey = keyCoder.encode(serializedKey: serializedKey)
+            XCTAssertEqual(encodedKey, testVector.base58CheckEncodedKey)
+        }
+    }
+
     func testGivenInvalidPrivateKey_AndCompressedPointFormat_WhenDerivateKey_ThenThrowError() {
         let privateKey = ExtendedKey(
             key: .init(),
@@ -62,41 +97,6 @@ final class PublicMasterKeyDerivatorTests: XCTestCase {
         XCTAssertEqual(
             try publicKey(pointFormat: .uncompressed).chainCode.count, 32
         )
-    }
-
-    func testGivenCompressedPointFormat_WhenDerivateKey_AndCountKeyBytes_ThenEqual33() throws {
-        let sut = self.sut()
-
-        for testVector in testVectors {
-            let seed = Data(hex: testVector.hexEncodedSeed)
-            let privateKey = try privateKeyDerivator.privateMasterKey(seed: seed)
-            let publicKey = try sut.publicKey(privateKey: privateKey, pointFormat: .compressed)
-            XCTAssertEqual(publicKey.key.count, 33)
-        }
-    }
-
-    func testGivenCompressedPointFormat_WhenDerivateKey_AndCountChainCodeBytes_ThenEqual32() throws {
-        let sut = self.sut()
-
-        for testVector in testVectors {
-            let seed = Data(hex: testVector.hexEncodedSeed)
-            let privateKey = try privateKeyDerivator.privateMasterKey(seed: seed)
-            let publicKey = try sut.publicKey(privateKey: privateKey, pointFormat: .compressed)
-            XCTAssertEqual(publicKey.chainCode.count, 32)
-        }
-    }
-
-    func testGivenVectorSeed_WhenDerivateKey_ThenEqualVectorKey() throws {
-        let sut = self.sut()
-
-        for testVector in testVectors {
-            let seed = Data(hex: testVector.hexEncodedSeed)
-            let privateKey = try privateKeyDerivator.privateMasterKey(seed: seed)
-            let publicKey = try sut.publicKey(privateKey: privateKey, pointFormat: .compressed)
-            let serializedKey = try keySerializer.serializedKey(extendedKey: publicKey, attributes: keyAttributes)
-            let encodedKey = keyCoder.encode(serializedKey: serializedKey)
-            XCTAssertEqual(encodedKey, testVector.base58CheckEncodedKey)
-        }
     }
 }
 

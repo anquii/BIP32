@@ -1,4 +1,5 @@
 import XCTest
+import CryptoSwift
 @testable import BIP32
 
 final class KeySerializerTests: XCTestCase {
@@ -6,19 +7,14 @@ final class KeySerializerTests: XCTestCase {
         .init()
     }
 
-    func testGivenExtendedKey_AndAttributes_WhenSerialize_ThenNoErrorThrown() {
-        XCTAssertNoThrow(
-            try serializedKey()
-        )
-    }
-}
-
-// MARK: - Helpers
-fileprivate extension KeySerializerTests {
-    func serializedKey() throws -> SerializedKeyable {
-        let extendedKey = try PrivateMasterKeyDerivator().privateMasterKey(seed: seedTestData)
+    func testGivenExtendedKey_AndAttributes_WhenSerialize_ThenNoErrorThrown() throws {
+        let seed = Data(hex: "000102030405060708090a0b0c0d0e0f")
+        let extendedKey = try PrivateMasterKeyDerivator().privateMasterKey(seed: seed)
         let versionContainer = BitcoinVersionContainer(network: .mainnet, keyAccessControl: .`private`)
         let attributes = MasterKeyAttributes(accessControl: .`private`, version: versionContainer.version)
-        return try sut().serializedKey(extendedKey: extendedKey, attributes: attributes)
+
+        XCTAssertNoThrow(
+            try sut().serializedKey(extendedKey: extendedKey, attributes: attributes)
+        )
     }
 }
