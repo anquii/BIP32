@@ -20,7 +20,7 @@ public struct SerializedKey: SerializedKeyable {
     public let index: UInt32
     public let extendedKey: ExtendedKeyable
 
-    public init(data: Data) throws {
+    init(data: Data) throws {
         guard
             data.count == Self.length,
             let version = UInt32(data: data[ByteRange.version]),

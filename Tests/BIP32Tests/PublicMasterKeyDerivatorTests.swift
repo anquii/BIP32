@@ -75,12 +75,6 @@ final class PublicMasterKeyDerivatorTests: XCTestCase {
         )
     }
 
-    func testGivenPrivateKey_AndCompressedPointFormat_WhenDerivateKey_ThenNoErrorThrown() {
-        XCTAssertNoThrow(
-            try publicKey(pointFormat: .compressed)
-        )
-    }
-
     func testGivenPrivateKey_AndUncompressedPointFormat_WhenDerivateKey_ThenNoErrorThrown() {
         XCTAssertNoThrow(
             try publicKey(pointFormat: .uncompressed)
