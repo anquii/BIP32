@@ -13,4 +13,12 @@ final class KeyCoderTests: XCTestCase {
         let encodedKey = sut().encode(serializedKey: serializedKey)
         XCTAssertEqual(encodedKey, SerializedKeyTestVector.base58CheckEncodedKey)
     }
+
+    func testGivenVectorKey_WhenDecode_ThenEqualVectorHex() throws {
+        let hexEncodedKey = try sut()
+            .decode(string: SerializedKeyTestVector.base58CheckEncodedKey)
+            .data
+            .toHexString()
+        XCTAssertEqual(hexEncodedKey, SerializedKeyTestVector.hexEncodedKey)
+    }
 }
