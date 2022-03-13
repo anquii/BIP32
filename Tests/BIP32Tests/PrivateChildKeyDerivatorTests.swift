@@ -34,28 +34,34 @@ final class PrivateChildKeyDerivatorTests: XCTestCase {
         for testVector in testVectors {
             let seed = Data(hex: testVector.hexEncodedSeed)
             var privateParentKey = try privateMasterKeyDerivator.privateMasterKey(seed: seed)
-            var publicParentKey = try publicMasterKeyDerivator.publicKey(privateKey: privateParentKey)
 
             for derivatedKey in testVector.derivatedKeys {
                 guard derivatedKey.depth > 0 else {
                     continue
                 }
-                let parentKeyFingerprint = keyFingerprintDerivator.fingerprint(publicKey: publicParentKey.key)
-                let parentKeyIndex = derivatedKey.isIndexHardened
+                let publicParentKey = try publicChildKeyDerivator.publicKey(privateKey: privateParentKey)
+                let childKeyIndex = derivatedKey.isIndexHardened
                     ? try keyIndexHardener.hardenedIndex(normalIndex: derivatedKey.index)
                     : derivatedKey.index
-                privateParentKey = try sut.privateChildKey(privateParentKey: privateParentKey, index: parentKeyIndex)
-                publicParentKey = try publicChildKeyDerivator.publicKey(privateKey: privateParentKey)
-                let parentKeyAttributes = ChildKeyAttributes(
+                let privateChildKey = try sut.privateChildKey(
+                    privateParentKey: privateParentKey,
+                    index: childKeyIndex
+                )
+                let parentKeyFingerprint = keyFingerprintDerivator.fingerprint(publicKey: publicParentKey.key)
+                let privateChildKeyAttributes = ChildKeyAttributes(
                     accessControl: .`private`,
                     version: keyVersion,
                     depth: derivatedKey.depth,
                     parentKeyFingerprint: parentKeyFingerprint,
-                    index: parentKeyIndex
+                    index: childKeyIndex
                 )
-                let serializedParentKey = try keySerializer.serializedKey(extendedKey: privateParentKey, attributes: parentKeyAttributes)
-                let encodedParentKey = keyCoder.encode(serializedKey: serializedParentKey)
-                XCTAssertEqual(encodedParentKey, derivatedKey.base58CheckEncodedPrivateKey)
+                let serializedChildKey = try keySerializer.serializedKey(
+                    extendedKey: privateChildKey,
+                    attributes: privateChildKeyAttributes
+                )
+                let encodedChildKey = keyCoder.encode(serializedKey: serializedChildKey)
+                XCTAssertEqual(encodedChildKey, derivatedKey.base58CheckEncodedPrivateKey)
+                privateParentKey = privateChildKey
             }
         }
     }

@@ -10,7 +10,7 @@ public protocol PublicChildKeyDerivating {
     ) throws -> ExtendedKeyable
 
     func publicKey(
-        parentPublicKey: ExtendedKeyable,
+        publicParentKey: ExtendedKeyable,
         pointFormat: ECPointFormat,
         index: UInt32
     ) throws -> ExtendedKeyable
@@ -41,7 +41,7 @@ extension PublicChildKeyDerivator: PublicChildKeyDerivating {
     }
 
     public func publicKey(
-        parentPublicKey: ExtendedKeyable,
+        publicParentKey: ExtendedKeyable,
         pointFormat: ECPointFormat = .compressed,
         index: UInt32
     ) throws -> ExtendedKeyable {
@@ -50,11 +50,11 @@ extension PublicChildKeyDerivator: PublicChildKeyDerivating {
         }
 
         let hmacSHA512 = HMAC(
-            key: parentPublicKey.chainCode.bytes,
+            key: publicParentKey.chainCode.bytes,
             variant: .sha2(.sha512)
         )
         do {
-            let bytes = parentPublicKey.key.bytes + index.bytes
+            let bytes = publicParentKey.key.bytes + index.bytes
             let hmacSHA512Bytes = try hmacSHA512.authenticate(bytes)
             let key = Data(hmacSHA512Bytes[HMACSHA512ByteRange.left])
             let chainCode = Data(hmacSHA512Bytes[HMACSHA512ByteRange.right])
@@ -84,8 +84,8 @@ extension PublicChildKeyDerivator: PublicChildKeyDerivating {
                 ) == 1,
                 secp256k1_ec_pubkey_parse(
                     context, &publicKey,
-                    parentPublicKey.key.bytes,
-                    parentPublicKey.key.count
+                    publicParentKey.key.bytes,
+                    publicParentKey.key.count
                 ) == 1,
                 secp256k1_ec_pubkey_tweak_add(
                     context,
