@@ -45,13 +45,13 @@ final class SerializedKeyTests: XCTestCase {
 
     func testGivenValidKey_WhenCountChainCodeBytes_ThenEqual32() throws {
         XCTAssertEqual(
-            try validKey().extendedKey.chainCode.count, 32
+            try validKey().chainCode.count, 32
         )
     }
 
     func testGivenValidKey_WhenCountKeyBytes_ThenEqual33() throws {
         XCTAssertEqual(
-            try validKey().extendedKey.key.count, 33
+            try validKey().key.count, 33
         )
     }
 }

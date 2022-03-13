@@ -12,6 +12,7 @@ public protocol PrivateChildKeyDerivating {
 }
 
 public struct PrivateChildKeyDerivator {
+    private static let keyLength = 32
     private static let keyPrefix = UInt8(0)
 
     public init() {}
@@ -52,10 +53,12 @@ extension PrivateChildKeyDerivator: PrivateChildKeyDerivating {
                 throw KeyError.invalidKey
             }
 
-            return ExtendedKey(
-                key: computedChildKey.serialize(),
-                chainCode: chainCode
-            )
+            let serializedChildKey = computedChildKey.serialize()
+            let privatekey = serializedChildKey.count == Self.keyLength
+                ? serializedChildKey
+                : Self.keyPrefix.bytes + serializedChildKey
+
+            return ExtendedKey(key: privatekey, chainCode: chainCode)
         } catch {
             throw KeyError.invalidKey
         }

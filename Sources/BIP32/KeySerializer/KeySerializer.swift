@@ -29,11 +29,7 @@ extension KeySerializer: KeySerializing {
         data += attributes.index.bytes
         data += extendedKey.chainCode
         if attributes.accessControl == .`private` {
-            let serializedLeadingZeros = Data(
-                repeating: Self.keyPrefix,
-                count: Self.serializedKeyLength - extendedKey.key.count
-            )
-            data += serializedLeadingZeros
+            data += Self.keyPrefix.bytes
         }
         data += extendedKey.key
 

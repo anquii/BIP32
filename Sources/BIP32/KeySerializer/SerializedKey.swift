@@ -7,7 +7,8 @@ public protocol SerializedKeyable {
     var depth: UInt8 { get }
     var parentKeyFingerprint: UInt32 { get }
     var index: UInt32 { get }
-    var extendedKey: ExtendedKeyable { get }
+    var chainCode: Data { get }
+    var key: Data { get }
 }
 
 public struct SerializedKey: SerializedKeyable {
@@ -18,7 +19,8 @@ public struct SerializedKey: SerializedKeyable {
     public let depth: UInt8
     public let parentKeyFingerprint: UInt32
     public let index: UInt32
-    public let extendedKey: ExtendedKeyable
+    public let chainCode: Data
+    public let key: Data
 
     init(data: Data) throws {
         guard
@@ -34,10 +36,8 @@ public struct SerializedKey: SerializedKeyable {
         self.parentKeyFingerprint = parentKeyFingerprint
         self.index = index
         depth = data[ByteRange.depth]
-        extendedKey = ExtendedKey(
-            key: data[ByteRange.key],
-            chainCode: data[ByteRange.chainCode]
-        )
+        chainCode = data[ByteRange.chainCode]
+        key = data[ByteRange.key]
     }
 }
 

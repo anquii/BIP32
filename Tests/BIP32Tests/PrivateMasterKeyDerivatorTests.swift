@@ -21,13 +21,13 @@ final class PrivateMasterKeyDerivatorTests: XCTestCase {
         .init()
     }
 
-    func testGivenSeed_WhenDerivateKey_AndCountKeyBytes_ThenEqual31_Or32() throws {
+    func testGivenSeed_WhenDerivateKey_AndCountKeyBytes_ThenEqual32() throws {
         let sut = self.sut()
 
         for testVector in testVectors {
             let seed = Data(hex: testVector.hexEncodedSeed)
             let extendedKey = try sut.privateMasterKey(seed: seed)
-            XCTAssertTrue((31...32).contains(extendedKey.key.count))
+            XCTAssertEqual(extendedKey.key.count, 32)
         }
     }
 
