@@ -28,7 +28,7 @@ final class PrivateChildKeyDerivatorTests: XCTestCase {
         .init()
     }
 
-    func testGivenVectorSeed_() throws {
+    func testGivenParentKey_WhenDerivateChildKey_ThenEqualVectorKey() throws {
         let sut = self.sut()
 
         for testVector in testVectors {
