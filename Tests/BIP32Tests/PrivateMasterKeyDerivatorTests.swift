@@ -22,23 +22,15 @@ final class PrivateMasterKeyDerivatorTests: XCTestCase {
     }
 
     func testGivenSeed_WhenDerivateKey_AndCountKeyBytes_ThenEqual32() throws {
-        let sut = self.sut()
-
-        for testVector in testVectors {
-            let seed = Data(hex: testVector.hexEncodedSeed)
-            let extendedKey = try sut.privateMasterKey(seed: seed)
-            XCTAssertEqual(extendedKey.key.count, 32)
-        }
+        let seed = Data(hex: testVectors.first!.hexEncodedSeed)
+        let masterKey = try sut().privateMasterKey(seed: seed)
+        XCTAssertEqual(masterKey.key.count, 32)
     }
 
     func testGivenSeed_WhenDerivateKey_AndCountChainCodeBytes_ThenEqual32() throws {
-        let sut = self.sut()
-
-        for testVector in testVectors {
-            let seed = Data(hex: testVector.hexEncodedSeed)
-            let extendedKey = try sut.privateMasterKey(seed: seed)
-            XCTAssertEqual(extendedKey.chainCode.count, 32)
-        }
+        let seed = Data(hex: testVectors.first!.hexEncodedSeed)
+        let masterKey = try sut().privateMasterKey(seed: seed)
+        XCTAssertEqual(masterKey.chainCode.count, 32)
     }
 
     func testGivenVectorSeed_WhenDerivateKey_ThenEqualVectorKey() throws {
@@ -46,8 +38,8 @@ final class PrivateMasterKeyDerivatorTests: XCTestCase {
 
         for testVector in testVectors {
             let seed = Data(hex: testVector.hexEncodedSeed)
-            let extendedKey = try sut.privateMasterKey(seed: seed)
-            let serializedKey = try keySerializer.serializedKey(extendedKey: extendedKey, attributes: keyAttributes)
+            let masterKey = try sut.privateMasterKey(seed: seed)
+            let serializedKey = try keySerializer.serializedKey(extendedKey: masterKey, attributes: keyAttributes)
             let encodedKey = keyCoder.encode(serializedKey: serializedKey)
             XCTAssertEqual(encodedKey, testVector.base58CheckEncodedKey)
         }

@@ -24,25 +24,15 @@ final class PublicMasterKeyDerivatorTests: XCTestCase {
     }
 
     func testGivenCompressedPointFormat_WhenDerivateKey_AndCountKeyBytes_ThenEqual33() throws {
-        let sut = self.sut()
-
-        for testVector in testVectors {
-            let seed = Data(hex: testVector.hexEncodedSeed)
-            let privateKey = try privateKeyDerivator.privateMasterKey(seed: seed)
-            let publicKey = try sut.publicKey(privateKey: privateKey, pointFormat: .compressed)
-            XCTAssertEqual(publicKey.key.count, 33)
-        }
+        XCTAssertEqual(
+            try publicKey(pointFormat: .compressed).key.count, 33
+        )
     }
 
     func testGivenCompressedPointFormat_WhenDerivateKey_AndCountChainCodeBytes_ThenEqual32() throws {
-        let sut = self.sut()
-
-        for testVector in testVectors {
-            let seed = Data(hex: testVector.hexEncodedSeed)
-            let privateKey = try privateKeyDerivator.privateMasterKey(seed: seed)
-            let publicKey = try sut.publicKey(privateKey: privateKey, pointFormat: .compressed)
-            XCTAssertEqual(publicKey.chainCode.count, 32)
-        }
+        XCTAssertEqual(
+            try publicKey(pointFormat: .compressed).chainCode.count, 32
+        )
     }
 
     func testGivenVectorSeed_WhenDerivateKey_ThenEqualVectorKey() throws {
