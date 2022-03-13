@@ -13,10 +13,6 @@ final class KeyFingerprintDerivatorTests: XCTestCase {
         .init()
     }
 
-    func testGivenVectors_WhenCount_ThenEqual5() {
-        XCTAssertEqual(testVectors.count, 5)
-    }
-
     func testGivenVectorPublicKey_WhenDerivateFingerprint_ThenEqualVectorFingerprint() throws {
         for testVector in testVectors {
             let publicKey = Data(hex: testVector.hexEncodedPublicKey)

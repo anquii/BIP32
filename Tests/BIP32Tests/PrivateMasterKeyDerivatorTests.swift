@@ -21,10 +21,6 @@ final class PrivateMasterKeyDerivatorTests: XCTestCase {
         .init()
     }
 
-    func testGivenVectors_WhenCount_ThenEqual4() {
-        XCTAssertEqual(testVectors.count, 4)
-    }
-
     func testGivenSeed_WhenDerivateKey_AndCountKeyBytes_ThenEqual31_Or32() throws {
         let sut = self.sut()
 

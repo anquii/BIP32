@@ -23,10 +23,6 @@ final class PublicMasterKeyDerivatorTests: XCTestCase {
         .init()
     }
 
-    func testGivenVectors_WhenCount_ThenEqual4() {
-        XCTAssertEqual(testVectors.count, 4)
-    }
-
     func testGivenCompressedPointFormat_WhenDerivateKey_AndCountKeyBytes_ThenEqual33() throws {
         let sut = self.sut()
 
