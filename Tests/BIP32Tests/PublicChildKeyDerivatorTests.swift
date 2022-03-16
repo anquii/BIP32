@@ -49,6 +49,9 @@ final class PublicChildKeyDerivatorTests: XCTestCase {
                     index: childKeyIndex
                 )
                 let publicChildKey = try sut.publicKey(privateKey: privateChildKey)
+                XCTAssertEqual(publicChildKey.key.count, 33)
+                XCTAssertEqual(publicChildKey.chainCode.count, 32)
+
                 let parentKeyFingerprint = keyFingerprintDerivator.fingerprint(publicKey: publicParentKey.key)
                 let childKeyAttributes = ChildKeyAttributes(
                     accessControl: .`public`,
@@ -92,6 +95,9 @@ final class PublicChildKeyDerivatorTests: XCTestCase {
                     continue
                 }
                 let publicChildKey = try sut.publicKey(publicParentKey: publicParentKey, index: derivatedKey.index)
+                XCTAssertEqual(publicChildKey.key.count, 33)
+                XCTAssertEqual(publicChildKey.chainCode.count, 32)
+
                 let parentKeyFingerprint = keyFingerprintDerivator.fingerprint(publicKey: publicParentKey.key)
                 let childKeyAttributes = ChildKeyAttributes(
                     accessControl: .`public`,

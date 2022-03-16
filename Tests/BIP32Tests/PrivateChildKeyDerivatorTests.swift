@@ -48,6 +48,9 @@ final class PrivateChildKeyDerivatorTests: XCTestCase {
                     privateParentKey: privateParentKey,
                     index: childKeyIndex
                 )
+                XCTAssertEqual(privateChildKey.key.count, 32)
+                XCTAssertEqual(privateChildKey.chainCode.count, 32)
+
                 let parentKeyFingerprint = keyFingerprintDerivator.fingerprint(publicKey: publicParentKey.key)
                 let privateChildKeyAttributes = ChildKeyAttributes(
                     accessControl: .`private`,
