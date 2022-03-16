@@ -28,7 +28,7 @@ extension KeySerializer: KeySerializing {
         data += attributes.parentKeyFingerprint.bytes
         data += attributes.index.bytes
         data += extendedKey.chainCode
-        if attributes.accessControl == .`private` {
+        if attributes.accessControl == .`private`, extendedKey.key.count < Self.serializedKeyLength {
             data += Self.keyPrefix.bytes
         }
         data += extendedKey.key
