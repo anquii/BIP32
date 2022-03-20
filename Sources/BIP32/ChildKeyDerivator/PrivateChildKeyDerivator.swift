@@ -6,7 +6,6 @@ import BigInt
 public protocol PrivateChildKeyDerivating {
     func privateChildKey(
         privateParentKey: ExtendedKeyable,
-        pointFormat: ECPointFormat,
         index: UInt32
     ) throws -> ExtendedKeyable
 }
@@ -22,7 +21,6 @@ public struct PrivateChildKeyDerivator {
 extension PrivateChildKeyDerivator: PrivateChildKeyDerivating {
     public func privateChildKey(
         privateParentKey: ExtendedKeyable,
-        pointFormat: ECPointFormat = .compressed,
         index: UInt32
     ) throws -> ExtendedKeyable {
         let keyBytes: [UInt8]
@@ -31,8 +29,7 @@ extension PrivateChildKeyDerivator: PrivateChildKeyDerivating {
             keyBytes = Self.keyPrefix.bytes + privateParentKey.key.bytes
         } else {
             keyBytes = try secp256k1.serializedPoint(
-                data: privateParentKey.key,
-                format: pointFormat
+                data: privateParentKey.key
             ).bytes
         }
 

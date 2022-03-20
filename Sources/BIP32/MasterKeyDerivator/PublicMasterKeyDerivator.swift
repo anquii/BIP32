@@ -3,8 +3,7 @@ import secp256k1
 
 public protocol PublicMasterKeyDerivating {
     func publicKey(
-        privateKey: ExtendedKeyable,
-        pointFormat: ECPointFormat
+        privateKey: ExtendedKeyable
     ) throws -> ExtendedKeyable
 }
 
@@ -15,13 +14,11 @@ public struct PublicMasterKeyDerivator {
 // MARK: - PublicMasterKeyDerivating
 extension PublicMasterKeyDerivator: PublicMasterKeyDerivating {
     public func publicKey(
-        privateKey: ExtendedKeyable,
-        pointFormat: ECPointFormat = .compressed
+        privateKey: ExtendedKeyable
     ) throws -> ExtendedKeyable {
         do {
             let publicKey = try secp256k1.serializedPoint(
-                data: privateKey.key,
-                format: pointFormat
+                data: privateKey.key
             )
             return ExtendedKey(
                 key: publicKey,
