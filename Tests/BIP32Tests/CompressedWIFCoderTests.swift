@@ -14,9 +14,9 @@ final class CompressedWIFCoderTests: XCTestCase {
     }
 
     func testGivenVectorCompressedWIF_WhenDecode_ThenEqualVectorHex() throws {
-        let compressedWIF = try sut().decode(string: CompressedWIFTestVector.wifCompressedPrivateKey)
-        XCTAssertEqual(compressedWIF.privateKey.toHexString(), CompressedWIFTestVector.hexEncodedPrivateKey)
-        XCTAssertEqual(compressedWIF.version, CompressedWIFTestVector.version)
+        let compressedWIFContainer = try sut().decode(string: CompressedWIFTestVector.wifCompressedPrivateKey)
+        XCTAssertEqual(compressedWIFContainer.privateKey.toHexString(), CompressedWIFTestVector.hexEncodedPrivateKey)
+        XCTAssertEqual(compressedWIFContainer.version, CompressedWIFTestVector.version)
     }
 
     func testGivenVectorWIF_WhenDecode_ThenInvalidDecoding() throws {

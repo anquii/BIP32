@@ -6,7 +6,7 @@ public protocol CompressedWIFEncoding {
 }
 
 public protocol CompressedWIFDecoding {
-    func decode(string: String) throws -> CompressedWIF
+    func decode(string: String) throws -> CompressedWIFContainer
 }
 
 public struct CompressedWIFCoder {
@@ -30,7 +30,7 @@ extension CompressedWIFCoder: CompressedWIFEncoding {
 
 // MARK: - CompressedWIFDecoding
 extension CompressedWIFCoder: CompressedWIFDecoding {
-    public func decode(string: String) throws -> CompressedWIF {
+    public func decode(string: String) throws -> CompressedWIFContainer {
         do {
             var data = try base58Check.decode(string: string)
             guard
@@ -41,7 +41,7 @@ extension CompressedWIFCoder: CompressedWIFDecoding {
             else {
                 throw KeyDecodingError.invalidDecoding
             }
-            return CompressedWIF(privateKey: data, version: version)
+            return CompressedWIFContainer(privateKey: data, version: version)
 
         } catch {
             throw KeyDecodingError.invalidDecoding

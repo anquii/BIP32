@@ -1,6 +1,6 @@
 import Foundation
 
-public struct CompressedWIF {
+public struct CompressedWIFContainer {
     let privateKey: Data
     let version: UInt8
 }
