@@ -29,9 +29,7 @@ final class PublicMasterKeyDerivatorTests: XCTestCase {
             chainCode: .init()
         )
         XCTAssertThrowsError(
-            try sut().publicKey(
-                privateKey: privateKey
-            )
+            try sut().publicKey(privateKey: privateKey)
         )
     }
 

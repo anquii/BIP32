@@ -4,14 +4,8 @@ import CryptoSwift
 import BigInt
 
 public protocol PublicChildKeyDerivating {
-    func publicKey(
-        privateKey: ExtendedKeyable
-    ) throws -> ExtendedKeyable
-
-    func publicKey(
-        publicParentKey: ExtendedKeyable,
-        index: UInt32
-    ) throws -> ExtendedKeyable
+    func publicKey(privateKey: ExtendedKeyable) throws -> ExtendedKeyable
+    func publicKey(publicParentKey: ExtendedKeyable, index: UInt32) throws -> ExtendedKeyable
 }
 
 public struct PublicChildKeyDerivator {
@@ -20,34 +14,21 @@ public struct PublicChildKeyDerivator {
 
 // MARK: - PublicChildKeyDerivating
 extension PublicChildKeyDerivator: PublicChildKeyDerivating {
-    public func publicKey(
-        privateKey: ExtendedKeyable
-    ) throws -> ExtendedKeyable {
+    public func publicKey(privateKey: ExtendedKeyable) throws -> ExtendedKeyable {
         do {
-            let publicKey = try secp256k1.serializedPoint(
-                data: privateKey.key
-            )
-            return ExtendedKey(
-                key: publicKey,
-                chainCode: privateKey.chainCode
-            )
+            let publicKey = try secp256k1.serializedPoint(data: privateKey.key)
+            return ExtendedKey(key: publicKey, chainCode: privateKey.chainCode)
         } catch {
             throw KeyError.invalidKey
         }
     }
 
-    public func publicKey(
-        publicParentKey: ExtendedKeyable,
-        index: UInt32
-    ) throws -> ExtendedKeyable {
+    public func publicKey(publicParentKey: ExtendedKeyable, index: UInt32) throws -> ExtendedKeyable {
         guard KeyIndexRange.normal.contains(index) else {
             throw KeyError.invalidKey
         }
 
-        let hmacSHA512 = HMAC(
-            key: publicParentKey.chainCode.bytes,
-            variant: .sha2(.sha512)
-        )
+        let hmacSHA512 = HMAC(key: publicParentKey.chainCode.bytes, variant: .sha2(.sha512))
         do {
             let bytes = publicParentKey.key.bytes + index.bytes
             let hmacSHA512Bytes = try hmacSHA512.authenticate(bytes)
@@ -99,10 +80,7 @@ extension PublicChildKeyDerivator: PublicChildKeyDerivating {
             }
             secp256k1_context_destroy(context)
 
-            return ExtendedKey(
-                key: Data(publicKeyBytes),
-                chainCode: chainCode
-            )
+            return ExtendedKey(key: Data(publicKeyBytes), chainCode: chainCode)
         } catch {
             throw KeyError.invalidKey
         }

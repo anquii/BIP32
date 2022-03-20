@@ -28,9 +28,7 @@ extension PrivateChildKeyDerivator: PrivateChildKeyDerivating {
         if KeyIndexRange.hardened.contains(index) {
             keyBytes = Self.keyPrefix.bytes + privateParentKey.key.bytes
         } else {
-            keyBytes = try secp256k1.serializedPoint(
-                data: privateParentKey.key
-            ).bytes
+            keyBytes = try secp256k1.serializedPoint(data: privateParentKey.key).bytes
         }
 
         let hmacSHA512 = HMAC(
