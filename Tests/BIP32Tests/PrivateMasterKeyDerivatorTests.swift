@@ -10,7 +10,7 @@ final class PrivateMasterKeyDerivatorTests: XCTestCase {
     private var testVectors: [MasterKeyTestVector]!
 
     override func setUpWithError() throws {
-        keyVersion = BitcoinVersionContainer(network: .mainnet, keyAccessControl: .`private`).version
+        keyVersion = BitcoinVersion(network: .mainnet, keyAccessControl: .`private`).wrappedValue
         keyAttributes = .init(accessControl: .`private`, version: keyVersion)
         keySerializer = .init()
         keyCoder = .init()

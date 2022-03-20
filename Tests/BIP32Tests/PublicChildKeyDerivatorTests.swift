@@ -17,7 +17,7 @@ final class PublicChildKeyDerivatorTests: XCTestCase {
         privateMasterKeyDerivator = .init()
         publicMasterKeyDerivator = .init()
         privateChildKeyDerivator = .init()
-        keyVersion = BitcoinVersionContainer(network: .mainnet, keyAccessControl: .`public`).version
+        keyVersion = BitcoinVersion(network: .mainnet, keyAccessControl: .`public`).wrappedValue
         keyFingerprintDerivator = .init()
         keyIndexHardener = .init()
         keySerializer = .init()

@@ -1,18 +1,19 @@
 @testable import BIP32
 
-struct BitcoinVersionContainer {
-    let version: UInt32
+@propertyWrapper
+struct BitcoinVersion {
+    let wrappedValue: UInt32
 
     init(network: Network, keyAccessControl: KeyAccessControl) {
         switch (network, keyAccessControl) {
         case (.mainnet, .`private`):
-            version = 0x0488ADE4
+            wrappedValue = 0x0488ADE4
         case (.mainnet, .`public`):
-            version = 0x0488B21E
+            wrappedValue = 0x0488B21E
         case (.testnet, .`private`):
-            version = 0x04358394
+            wrappedValue = 0x04358394
         case (.testnet, .`public`):
-            version = 0x043587CF
+            wrappedValue = 0x043587CF
         }
     }
 }
