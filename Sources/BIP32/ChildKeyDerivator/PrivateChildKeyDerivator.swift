@@ -11,8 +11,7 @@ public protocol PrivateChildKeyDerivating {
 }
 
 public struct PrivateChildKeyDerivator {
-    private static let keyLength = 32
-    private static let keyPrefix = UInt8(0)
+    private static let hardenedKeyPrefix = UInt8(0)
 
     public init() {}
 }
@@ -26,7 +25,7 @@ extension PrivateChildKeyDerivator: PrivateChildKeyDerivating {
         let keyBytes: [UInt8]
 
         if KeyIndexRange.hardened.contains(index) {
-            keyBytes = Self.keyPrefix.bytes + privateParentKey.key.bytes
+            keyBytes = Self.hardenedKeyPrefix.bytes + privateParentKey.key.bytes
         } else {
             keyBytes = try secp256k1.serializedPoint(data: privateParentKey.key).bytes
         }
@@ -47,13 +46,7 @@ extension PrivateChildKeyDerivator: PrivateChildKeyDerivating {
             guard !computedChildKey.isZero, bigIntegerKey < .secp256k1CurveOrder else {
                 throw KeyError.invalidKey
             }
-
-            let serializedChildKey = computedChildKey.serialize()
-            let privatekey = serializedChildKey.count == Self.keyLength
-                ? serializedChildKey
-                : Self.keyPrefix.bytes + serializedChildKey
-
-            return ExtendedKey(key: privatekey, chainCode: chainCode)
+            return ExtendedKey(key: computedChildKey.serialize(), chainCode: chainCode)
         } catch {
             throw KeyError.invalidKey
         }
