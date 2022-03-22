@@ -9,7 +9,7 @@ public protocol KeySerializing {
 
 public struct KeySerializer {
     private static let serializedKeyCapacity = 78
-    private static let serializedKeyLength = 33
+    private static let keyLength = 33
     private static let keyPrefix = UInt8(0)
 
     public init() {}
@@ -28,7 +28,7 @@ extension KeySerializer: KeySerializing {
         data += attributes.parentKeyFingerprint.bytes
         data += attributes.index.bytes
         data += extendedKey.chainCode
-        if attributes.accessControl == .`private`, extendedKey.key.count < Self.serializedKeyLength {
+        if attributes.accessControl == .`private`, extendedKey.key.count < Self.keyLength {
             data += Self.keyPrefix.bytes
         }
         data += extendedKey.key
