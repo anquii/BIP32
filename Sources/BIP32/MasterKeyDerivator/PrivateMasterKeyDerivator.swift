@@ -8,6 +8,8 @@ public protocol PrivateMasterKeyDerivating {
 
 public struct PrivateMasterKeyDerivator {
     private static let hmacSHA512Key = "Bitcoin seed"
+    private static let keyLength = 32
+    private static let keyPrefix = UInt8(0)
 
     public init() {}
 }
@@ -25,7 +27,12 @@ extension PrivateMasterKeyDerivator: PrivateMasterKeyDerivating {
             guard !bigIntegerKey.isZero, bigIntegerKey < .secp256k1CurveOrder else {
                 throw KeyError.invalidKey
             }
-            return ExtendedKey(key: key, chainCode: chainCode)
+            let serializedBigIntegerKey = bigIntegerKey.serialize()
+            let privatekey = serializedBigIntegerKey.count == Self.keyLength
+                ? serializedBigIntegerKey
+                : Self.keyPrefix.bytes + serializedBigIntegerKey
+
+            return ExtendedKey(key: privatekey, chainCode: chainCode)
         } catch {
             throw KeyError.invalidKey
         }
