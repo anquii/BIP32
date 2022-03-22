@@ -5,7 +5,7 @@ public protocol KeyEncoding {
 }
 
 public protocol KeyDecoding {
-    func decode(string: String) throws -> SerializedKeyable
+    func decode(string: String, accessControl: KeyAccessControl) throws -> SerializedKeyable
 }
 
 public struct KeyCoder {
@@ -25,10 +25,10 @@ extension KeyCoder: KeyEncoding {
 
 // MARK: - KeyDecoding
 extension KeyCoder: KeyDecoding {
-    public func decode(string: String) throws -> SerializedKeyable {
+    public func decode(string: String, accessControl: KeyAccessControl) throws -> SerializedKeyable {
         do {
             let decodedData = try base58Check.decode(string: string)
-            return try SerializedKey(data: decodedData)
+            return try SerializedKey(data: decodedData, accessControl: accessControl)
         } catch {
             throw KeyDecodingError.invalidDecoding
         }

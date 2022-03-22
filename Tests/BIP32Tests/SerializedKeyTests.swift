@@ -3,8 +3,8 @@ import CryptoSwift
 @testable import BIP32
 
 final class SerializedKeyTests: XCTestCase {
-    private func sut(data: Data) throws -> SerializedKey {
-        try .init(data: data)
+    private func sut(data: Data, accessControl: KeyAccessControl = .`public`) throws -> SerializedKey {
+        try .init(data: data, accessControl: accessControl)
     }
 
     func testGivenData_WithInvalidByteCount_WhenInit_ThenThrowError() {

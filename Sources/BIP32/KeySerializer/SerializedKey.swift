@@ -1,5 +1,6 @@
 import Foundation
 import CryptoSwift
+import BigInt
 
 public protocol SerializedKeyable {
     var data: Data { get }
@@ -12,7 +13,9 @@ public protocol SerializedKeyable {
 }
 
 public struct SerializedKey: SerializedKeyable {
-    private static let length = 78
+    private static let keyLength = 33
+    private static let privateKeyPrefix = UInt8(0)
+    private static let serializedKeyLength = 78
 
     public let data: Data
     public let version: UInt32
@@ -22,22 +25,29 @@ public struct SerializedKey: SerializedKeyable {
     public let chainCode: Data
     public let key: Data
 
-    init(data: Data) throws {
+    init(data: Data, accessControl: KeyAccessControl) throws {
+        if accessControl == .`private`, data.indices.contains(ByteRange.key.lowerBound), data[ByteRange.key].count < Self.keyLength {
+            var mutableData = data
+            mutableData.insert(Self.privateKeyPrefix, at: ByteRange.key.lowerBound)
+            self.data = mutableData
+        } else {
+            self.data = data
+        }
         guard
-            data.count == Self.length,
+            self.data.count == Self.serializedKeyLength,
             let version = UInt32(data: data[ByteRange.version]),
             let parentKeyFingerprint = UInt32(data: data[ByteRange.parentKeyFingerprint]),
             let index = UInt32(data: data[ByteRange.index])
         else {
             throw KeyError.invalidKey
         }
-        self.data = data
         self.version = version
         self.parentKeyFingerprint = parentKeyFingerprint
         self.index = index
         depth = data[ByteRange.depth]
         chainCode = data[ByteRange.chainCode]
-        key = data[ByteRange.key]
+        key = self.data[ByteRange.key]
+        try validate(accessControl: accessControl)
     }
 }
 
@@ -52,5 +62,30 @@ fileprivate extension SerializedKey {
         static let key = 45...
 
         private init() {}
+    }
+
+    func validate(accessControl: KeyAccessControl) throws {
+        let hasNonZeroParentKeyFingerprintAtZeroDepth = depth == UInt8(0) && parentKeyFingerprint != UInt32(0)
+        let hasNonZeroIndexAtZeroDepth = depth == UInt8(0) && index != UInt32(0)
+        let hasInvalidKeyLength = key.count != Self.keyLength
+
+        var invalidationRules = [
+            hasNonZeroParentKeyFingerprintAtZeroDepth,
+            hasNonZeroIndexAtZeroDepth,
+            hasInvalidKeyLength
+        ]
+
+        switch accessControl {
+        case .`private`:
+            let bigIntegerKey = BigUInt(key)
+            let isPrivateKeyInValidRange = !bigIntegerKey.isZero && bigIntegerKey < .secp256k1CurveOrder
+            invalidationRules.append(!isPrivateKeyInValidRange)
+        case .`public`:
+            break
+        }
+
+        guard !invalidationRules.contains(true) else {
+            throw KeyError.invalidKey
+        }
     }
 }

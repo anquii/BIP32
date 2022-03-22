@@ -16,7 +16,7 @@ let publicMasterKeyTestVectorData =
         {
             "hexEncodedSeed": "3ddd5602285899a946114506157c7997e5444528f3003f6134712147db19b678",
             "base58CheckEncodedKey": "xpub661MyMwAqRbcGczjuMoRm6dXaLDEhW1u34gKenbeYqAix21mdUKJyuyu5F1rzYGVxyL6tmgBUAEPrEz92mBXjByMRiJdba9wpnN37RLLAXa"
-        },
+        }
     ]
     """
     .data(using: .utf8)!
