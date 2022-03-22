@@ -68,13 +68,16 @@ fileprivate extension SerializedKey {
             hasInvalidKeyLength
         ]
 
+        let firstByte = key.bytes.first!
         switch accessControl {
         case .`private`:
             let bigIntegerKey = BigUInt(key)
             let isPrivateKeyInValidRange = !bigIntegerKey.isZero && bigIntegerKey < .secp256k1CurveOrder
-            invalidationRules.append(!isPrivateKeyInValidRange)
+            let isPrivateKeyPrefixValid = firstByte == UInt8(0)
+            invalidationRules.append(contentsOf: [!isPrivateKeyInValidRange, !isPrivateKeyPrefixValid])
         case .`public`:
-            break
+            let isPublicKeyPrefixValid = (2...3).contains(firstByte)
+            invalidationRules.append(!isPublicKeyPrefixValid)
         }
 
         guard !invalidationRules.contains(true) else {
