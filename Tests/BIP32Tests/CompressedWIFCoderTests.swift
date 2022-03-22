@@ -19,7 +19,7 @@ final class CompressedWIFCoderTests: XCTestCase {
         XCTAssertEqual(compressedWIFContainer.version, CompressedWIFTestVector.version)
     }
 
-    func testGivenVectorWIF_WhenDecode_ThenInvalidDecoding() throws {
+    func testGivenVectorWIF_WhenDecode_ThenInvalidDecoding() {
         XCTAssertThrowsError(
             try sut().decode(string: CompressedWIFTestVector.wifEncodedPrivateKey)
         )
