@@ -3,17 +3,17 @@ import CryptoSwift
 @testable import BIP32
 
 final class SerializedKeyTests: XCTestCase {
-    private func sut(data: Data, accessControl: KeyAccessControl = .`public`) throws -> SerializedKey {
+    private func sut(data: Data, accessControl: KeyAccessControl) throws -> SerializedKey {
         try .init(data: data, accessControl: accessControl)
     }
 
-    func testGivenData_WithInvalidByteCount_WhenInit_ThenThrowError() {
+    func testGivenKey_WithInvalidByteCount_WhenInit_ThenThrowError() {
         XCTAssertThrowsError(
-            try sut(data: .init())
+            try sut(data: .init(), accessControl: .`private`)
         )
     }
 
-    func testGivenData_WithValidByteCount_WhenInit_ThenNoErrorThrown() {
+    func testGivenKey_WithValidByteCount_WhenInit_ThenNoErrorThrown() {
         XCTAssertNoThrow(
             try validKey()
         )
@@ -49,17 +49,23 @@ final class SerializedKeyTests: XCTestCase {
         )
     }
 
-    func testGivenValidKey_WhenCountKeyBytes_ThenEqual33() throws {
+    func testGivenValidKey_WithPrivateAccessControl_WhenCountKeyBytes_ThenEqual33() throws {
         XCTAssertEqual(
-            try validKey().key.count, 33
+            try validKey(accessControl: .`private`).key.count, 33
+        )
+    }
+
+    func testGivenValidKey_WithPublicAccessControl_WhenCountKeyBytes_ThenEqual33() throws {
+        XCTAssertEqual(
+            try validKey(accessControl: .`public`).key.count, 33
         )
     }
 }
 
 // MARK: - Helpers
 fileprivate extension SerializedKeyTests {
-    func validKey() throws -> SerializedKey {
+    func validKey(accessControl: KeyAccessControl = .`private`) throws -> SerializedKey {
         let data = Data(hex: SerializedKeyTestVector.hexEncodedKey)
-        return try sut(data: data)
+        return try sut(data: data, accessControl: accessControl)
     }
 }
