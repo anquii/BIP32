@@ -4,5 +4,5 @@ struct CompressedWIFTestVector {
     static let wifCompressedPrivateKey = "KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ"
     static let version = UInt8(128)
 
-    init() {}
+    private init() {}
 }

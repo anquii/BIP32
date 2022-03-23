@@ -4,10 +4,7 @@ import CryptoSwift
 import BigInt
 
 public protocol PrivateChildKeyDerivating {
-    func privateChildKey(
-        privateParentKey: ExtendedKeyable,
-        index: UInt32
-    ) throws -> ExtendedKeyable
+    func privateChildKey(privateParentKey: ExtendedKeyable, index: UInt32) throws -> ExtendedKeyable
 }
 
 public struct PrivateChildKeyDerivator {
@@ -19,10 +16,7 @@ public struct PrivateChildKeyDerivator {
 
 // MARK: - PrivateChildKeyDerivating
 extension PrivateChildKeyDerivator: PrivateChildKeyDerivating {
-    public func privateChildKey(
-        privateParentKey: ExtendedKeyable,
-        index: UInt32
-    ) throws -> ExtendedKeyable {
+    public func privateChildKey(privateParentKey: ExtendedKeyable, index: UInt32) throws -> ExtendedKeyable {
         let keyBytes: [UInt8]
 
         if KeyIndexRange.hardened.contains(index) {

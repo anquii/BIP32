@@ -18,5 +18,5 @@ struct SerializedKeyTestVector {
         .components(separatedBy: .newlines)
         .joined()
 
-    init() {}
+    private init() {}
 }

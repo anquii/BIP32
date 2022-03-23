@@ -1,10 +1,7 @@
 import Foundation
 
 public protocol KeySerializing {
-    func serializedKey(
-        extendedKey: ExtendedKeyable,
-        attributes: KeyAttributes
-    ) throws -> SerializedKeyable
+    func serializedKey(extendedKey: ExtendedKeyable, attributes: KeyAttributes) throws -> SerializedKeyable
 }
 
 public struct KeySerializer {
@@ -17,10 +14,7 @@ public struct KeySerializer {
 
 // MARK: - KeySerializing
 extension KeySerializer: KeySerializing {
-    public func serializedKey(
-        extendedKey: ExtendedKeyable,
-        attributes: KeyAttributes
-    ) throws -> SerializedKeyable {
+    public func serializedKey(extendedKey: ExtendedKeyable, attributes: KeyAttributes) throws -> SerializedKeyable {
         var data = Data(capacity: Self.serializedKeyCapacity)
 
         data += attributes.version.bytes
