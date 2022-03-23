@@ -1,5 +1,4 @@
 import XCTest
-import CryptoSwift
 @testable import BIP32
 
 final class PublicMasterKeyDerivatorTests: XCTestCase {

@@ -22,7 +22,7 @@ let package = Package(
         .package(
             name: "secp256k1",
             url: "https://github.com/GigaBitcoin/secp256k1.swift.git",
-            .upToNextMajor(from: "0.4.0")
+            .exact("0.5.0")
         ),
         .package(
             name: "RIPEMD160",

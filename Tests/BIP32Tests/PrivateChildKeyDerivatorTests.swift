@@ -1,5 +1,4 @@
 import XCTest
-import CryptoSwift
 import BIP32
 
 final class PrivateChildKeyDerivatorTests: XCTestCase {

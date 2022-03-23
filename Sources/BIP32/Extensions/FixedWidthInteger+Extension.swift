@@ -1,5 +1,4 @@
 import Foundation
-import CryptoSwift
 
 extension FixedWidthInteger {
     init?(data: Data) {
