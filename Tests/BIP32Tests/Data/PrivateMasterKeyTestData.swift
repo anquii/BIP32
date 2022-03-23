@@ -1,4 +1,4 @@
-let privateMasterKeyTestVectorData =
+let privateMasterKeyTestData =
     """
     [
         {

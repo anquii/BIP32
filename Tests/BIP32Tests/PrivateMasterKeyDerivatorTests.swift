@@ -1,20 +1,20 @@
 import XCTest
 import CryptoSwift
-@testable import BIP32
+import BIP32
 
 final class PrivateMasterKeyDerivatorTests: XCTestCase {
     private var keyVersion: UInt32!
     private var keyAttributes: MasterKeyAttributes!
     private var keySerializer: KeySerializer!
-    private var keyCoder: KeyCoder!
+    private var serializedKeyCoder: SerializedKeyCoder!
     private var testVectors: [MasterKeyTestVector]!
 
     override func setUpWithError() throws {
         keyVersion = BitcoinVersion(network: .mainnet, keyAccessControl: .`private`).wrappedValue
         keyAttributes = .init(accessControl: .`private`, version: keyVersion)
         keySerializer = .init()
-        keyCoder = .init()
-        testVectors = try JSONDecoder().decode([MasterKeyTestVector].self, from: privateMasterKeyTestVectorData)
+        serializedKeyCoder = .init()
+        testVectors = try JSONDecoder().decode([MasterKeyTestVector].self, from: privateMasterKeyTestData)
     }
 
     private func sut() -> PrivateMasterKeyDerivator {
@@ -40,7 +40,7 @@ final class PrivateMasterKeyDerivatorTests: XCTestCase {
             let seed = Data(hex: testVector.hexEncodedSeed)
             let masterKey = try sut.privateMasterKey(seed: seed)
             let serializedKey = try keySerializer.serializedKey(extendedKey: masterKey, attributes: keyAttributes)
-            let encodedKey = keyCoder.encode(serializedKey: serializedKey)
+            let encodedKey = serializedKeyCoder.encode(serializedKey: serializedKey)
             XCTAssertEqual(encodedKey, testVector.base58CheckEncodedKey)
         }
     }

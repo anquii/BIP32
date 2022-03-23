@@ -9,6 +9,8 @@ public protocol CompressedWIFDecoding {
     func decode(string: String) throws -> CompressedWIFContainer
 }
 
+public typealias CompressedWIFCoding = CompressedWIFEncoding & CompressedWIFDecoding
+
 public struct CompressedWIFCoder {
     private static let byteLength = 34
     private static let byteSuffix = UInt8(1)

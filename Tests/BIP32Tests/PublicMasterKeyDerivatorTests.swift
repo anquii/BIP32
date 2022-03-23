@@ -7,7 +7,7 @@ final class PublicMasterKeyDerivatorTests: XCTestCase {
     private var keyVersion: UInt32!
     private var keyAttributes: MasterKeyAttributes!
     private var keySerializer: KeySerializer!
-    private var keyCoder: KeyCoder!
+    private var serializedKeyCoder: SerializedKeyCoder!
     private var testVectors: [MasterKeyTestVector]!
 
     override func setUpWithError() throws {
@@ -15,8 +15,8 @@ final class PublicMasterKeyDerivatorTests: XCTestCase {
         keyVersion = BitcoinVersion(network: .mainnet, keyAccessControl: .`public`).wrappedValue
         keyAttributes = .init(accessControl: .`public`, version: keyVersion)
         keySerializer = .init()
-        keyCoder = .init()
-        testVectors = try JSONDecoder().decode([MasterKeyTestVector].self, from: publicMasterKeyTestVectorData)
+        serializedKeyCoder = .init()
+        testVectors = try JSONDecoder().decode([MasterKeyTestVector].self, from: publicMasterKeyTestData)
     }
 
     private func sut() -> PublicMasterKeyDerivator {
@@ -53,7 +53,7 @@ final class PublicMasterKeyDerivatorTests: XCTestCase {
             let privateKey = try privateKeyDerivator.privateMasterKey(seed: seed)
             let publicKey = try sut.publicKey(privateKey: privateKey)
             let serializedKey = try keySerializer.serializedKey(extendedKey: publicKey, attributes: keyAttributes)
-            let encodedKey = keyCoder.encode(serializedKey: serializedKey)
+            let encodedKey = serializedKeyCoder.encode(serializedKey: serializedKey)
             XCTAssertEqual(encodedKey, testVector.base58CheckEncodedKey)
         }
     }

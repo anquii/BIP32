@@ -27,6 +27,6 @@ extension KeySerializer: KeySerializing {
         }
         data += extendedKey.key
 
-        return try SerializedKey(data: data, accessControl: attributes.accessControl)
+        return try SerializedKey(data: data)
     }
 }

@@ -6,7 +6,7 @@ final class KeyFingerprintDerivatorTests: XCTestCase {
     private var testVectors: [KeyFingerprintTestVector]!
 
     override func setUpWithError() throws {
-        testVectors = try JSONDecoder().decode([KeyFingerprintTestVector].self, from: keyFingerprintTestVectorData)
+        testVectors = try JSONDecoder().decode([KeyFingerprintTestVector].self, from: keyFingerprintTestData)
     }
 
     private func sut() -> KeyFingerprintDerivator {

@@ -1,6 +1,6 @@
 import XCTest
 import CryptoSwift
-@testable import BIP32
+import BIP32
 
 final class PublicChildKeyDerivatorTests: XCTestCase {
     private var privateMasterKeyDerivator: PrivateMasterKeyDerivator!
@@ -10,7 +10,7 @@ final class PublicChildKeyDerivatorTests: XCTestCase {
     private var keyFingerprintDerivator: KeyFingerprintDerivator!
     private var keyIndexHardener: KeyIndexHardener!
     private var keySerializer: KeySerializer!
-    private var keyCoder: KeyCoder!
+    private var serializedKeyCoder: SerializedKeyCoder!
     private var testVectors: [KeyTestVector]!
 
     override func setUpWithError() throws {
@@ -21,8 +21,8 @@ final class PublicChildKeyDerivatorTests: XCTestCase {
         keyFingerprintDerivator = .init()
         keyIndexHardener = .init()
         keySerializer = .init()
-        keyCoder = .init()
-        testVectors = try JSONDecoder().decode([KeyTestVector].self, from: keyTestVectorData)
+        serializedKeyCoder = .init()
+        testVectors = try JSONDecoder().decode([KeyTestVector].self, from: keyTestData)
     }
 
     private func sut() -> PublicChildKeyDerivator {
@@ -64,7 +64,7 @@ final class PublicChildKeyDerivatorTests: XCTestCase {
                     extendedKey: publicChildKey,
                     attributes: childKeyAttributes
                 )
-                let encodedChildKey = keyCoder.encode(serializedKey: serializedChildKey)
+                let encodedChildKey = serializedKeyCoder.encode(serializedKey: serializedChildKey)
                 XCTAssertEqual(encodedChildKey, derivatedKey.base58CheckEncodedPublicKey)
                 privateParentKey = privateChildKey
                 publicParentKey = publicChildKey
@@ -110,7 +110,7 @@ final class PublicChildKeyDerivatorTests: XCTestCase {
                     extendedKey: publicChildKey,
                     attributes: childKeyAttributes
                 )
-                let encodedChildKey = keyCoder.encode(serializedKey: serializedChildKey)
+                let encodedChildKey = serializedKeyCoder.encode(serializedKey: serializedChildKey)
                 XCTAssertEqual(encodedChildKey, derivatedKey.base58CheckEncodedPublicKey)
                 privateParentKey = try privateChildKeyDerivator.privateChildKey(
                     privateParentKey: privateParentKey,

@@ -18,7 +18,6 @@ public struct PrivateChildKeyDerivator {
 extension PrivateChildKeyDerivator: PrivateChildKeyDerivating {
     public func privateChildKey(privateParentKey: ExtendedKeyable, index: UInt32) throws -> ExtendedKeyable {
         let keyBytes: [UInt8]
-
         if KeyIndexRange.hardened.contains(index) {
             keyBytes = Self.keyPrefix.bytes + privateParentKey.key.bytes
         } else {

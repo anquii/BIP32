@@ -1,5 +1,5 @@
 /// https://github.com/satoshilabs/slips/blob/master/slip-0010.md#test-vector-1-for-secp256k1
-let keyFingerprintTestVectorData =
+let keyFingerprintTestData =
     """
     [
         {

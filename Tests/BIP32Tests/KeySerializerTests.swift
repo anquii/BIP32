@@ -1,6 +1,6 @@
 import XCTest
 import CryptoSwift
-@testable import BIP32
+import BIP32
 
 final class KeySerializerTests: XCTestCase {
     private func sut() -> KeySerializer {

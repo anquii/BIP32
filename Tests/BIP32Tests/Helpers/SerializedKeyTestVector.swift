@@ -1,3 +1,5 @@
+import BIP32
+
 struct SerializedKeyTestVector {
     static let hexEncodedKey =
         """
@@ -17,6 +19,8 @@ struct SerializedKeyTestVector {
         """
         .components(separatedBy: .newlines)
         .joined()
+
+    static let keyAccessControl = KeyAccessControl.`private`
 
     private init() {}
 }

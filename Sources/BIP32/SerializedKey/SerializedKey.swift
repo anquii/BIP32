@@ -1,6 +1,4 @@
 import Foundation
-import CryptoSwift
-import BigInt
 
 public protocol SerializedKeyable {
     var data: Data { get }
@@ -14,7 +12,6 @@ public protocol SerializedKeyable {
 
 public struct SerializedKey: SerializedKeyable {
     private static let capacity = 78
-    private static let keyLength = 33
 
     public let data: Data
     public let version: UInt32
@@ -24,7 +21,7 @@ public struct SerializedKey: SerializedKeyable {
     public let chainCode: Data
     public let key: Data
 
-    init(data: Data, accessControl: KeyAccessControl) throws {
+    init(data: Data) throws {
         guard
             data.count == Self.capacity,
             let version = UInt32(data: data[ByteRange.version]),
@@ -40,7 +37,6 @@ public struct SerializedKey: SerializedKeyable {
         depth = data[ByteRange.depth]
         chainCode = data[ByteRange.chainCode]
         key = data[ByteRange.key]
-        try validate(accessControl: accessControl)
     }
 }
 
@@ -55,33 +51,5 @@ fileprivate extension SerializedKey {
         static let key = 45...
 
         private init() {}
-    }
-
-    func validate(accessControl: KeyAccessControl) throws {
-        let hasNonZeroParentKeyFingerprintAtZeroDepth = depth == UInt8(0) && parentKeyFingerprint != UInt32(0)
-        let hasNonZeroIndexAtZeroDepth = depth == UInt8(0) && index != UInt32(0)
-        let hasInvalidKeyLength = key.count != Self.keyLength
-
-        var invalidationRules = [
-            hasNonZeroParentKeyFingerprintAtZeroDepth,
-            hasNonZeroIndexAtZeroDepth,
-            hasInvalidKeyLength
-        ]
-
-        let firstByte = key.bytes.first!
-        switch accessControl {
-        case .`private`:
-            let bigIntegerKey = BigUInt(key)
-            let isPrivateKeyInValidRange = !bigIntegerKey.isZero && bigIntegerKey < .secp256k1CurveOrder
-            let isPrivateKeyPrefixValid = firstByte == UInt8(0)
-            invalidationRules.append(contentsOf: [!isPrivateKeyInValidRange, !isPrivateKeyPrefixValid])
-        case .`public`:
-            let isPublicKeyPrefixValid = (2...3).contains(firstByte)
-            invalidationRules.append(!isPublicKeyPrefixValid)
-        }
-
-        guard !invalidationRules.contains(true) else {
-            throw KeyError.invalidKey
-        }
     }
 }

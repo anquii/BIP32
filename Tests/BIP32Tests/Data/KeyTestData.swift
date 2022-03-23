@@ -1,4 +1,4 @@
-let keyTestVectorData =
+let keyTestData =
     """
     [
         {
