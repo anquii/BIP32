@@ -28,7 +28,7 @@ public struct SerializedKey: SerializedKeyable {
             let parentKeyFingerprint = UInt32(data: data[ByteRange.parentKeyFingerprint]),
             let index = UInt32(data: data[ByteRange.index])
         else {
-            throw KeyError.invalidKey
+            throw SerializedKeyError.invalidKey
         }
         self.data = data
         self.version = version

@@ -25,7 +25,7 @@ extension PrivateMasterKeyDerivator: PrivateMasterKeyDerivating {
 
             let bigIntegerKey = BigUInt(key)
             guard !bigIntegerKey.isZero, bigIntegerKey < .secp256k1CurveOrder else {
-                throw KeyError.invalidKey
+                throw KeyDerivatorError.invalidKey
             }
             let serializedBigIntegerKey = bigIntegerKey.serialize()
             let privatekey = serializedBigIntegerKey.count == Self.keyLength
@@ -34,7 +34,7 @@ extension PrivateMasterKeyDerivator: PrivateMasterKeyDerivating {
 
             return ExtendedKey(key: privatekey, chainCode: chainCode)
         } catch {
-            throw KeyError.invalidKey
+            throw KeyDerivatorError.invalidKey
         }
     }
 }

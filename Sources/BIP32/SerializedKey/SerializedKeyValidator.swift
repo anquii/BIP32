@@ -39,7 +39,7 @@ extension SerializedKeyValidator: SerializedKeyValidating {
         }
 
         guard !invalidationRules.contains(true) else {
-            throw KeyError.invalidKey
+            throw SerializedKeyError.invalidKey
         }
     }
 }
@@ -47,20 +47,17 @@ extension SerializedKeyValidator: SerializedKeyValidating {
 // MARK: - Helpers
 fileprivate extension SerializedKeyValidator {
     func hasVerifiedPublicKeyCurvePoint(publicKey: Data) throws -> Bool {
-        guard let context = secp256k1_context_create(secp256k1.Context.none.rawValue) else {
-            throw KeyError.invalidKey
-        }
-        defer {
-            secp256k1_context_destroy(context)
-        }
         var parsedPublicKey = secp256k1_pubkey()
         var randomBytes = [UInt8](repeating: 0, count: 32)
-        if SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes) == errSecSuccess,
+        guard
+            let context = secp256k1_context_create(secp256k1.Context.none.rawValue),
+            SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes) == errSecSuccess,
             secp256k1_context_randomize(context, randomBytes) == 1,
-            secp256k1_ec_pubkey_parse(context, &parsedPublicKey, publicKey.bytes, publicKey.count) == 1 {
-            return true
-        } else {
+            secp256k1_ec_pubkey_parse(context, &parsedPublicKey, publicKey.bytes, publicKey.count) == 1
+        else {
             return false
         }
+        secp256k1_context_destroy(context)
+        return true
     }
 }

@@ -16,7 +16,7 @@ extension PublicMasterKeyDerivator: PublicMasterKeyDerivating {
             let publicKey = try secp256k1.serializedPoint(data: privateKey.key)
             return ExtendedKey(key: publicKey, chainCode: privateKey.chainCode)
         } catch {
-            throw KeyError.invalidKey
+            throw KeyDerivatorError.invalidKey
         }
     }
 }

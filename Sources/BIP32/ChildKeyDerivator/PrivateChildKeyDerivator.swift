@@ -38,7 +38,7 @@ extension PrivateChildKeyDerivator: PrivateChildKeyDerivating {
             let bigIntegerParentKey = BigUInt(privateParentKey.key)
             let computedChildKey = (bigIntegerKey + bigIntegerParentKey) % .secp256k1CurveOrder
             guard !computedChildKey.isZero, bigIntegerKey < .secp256k1CurveOrder else {
-                throw KeyError.invalidKey
+                throw KeyDerivatorError.invalidKey
             }
 
             let serializedChildKey = computedChildKey.serialize()
@@ -48,7 +48,7 @@ extension PrivateChildKeyDerivator: PrivateChildKeyDerivating {
 
             return ExtendedKey(key: privatekey, chainCode: chainCode)
         } catch {
-            throw KeyError.invalidKey
+            throw KeyDerivatorError.invalidKey
         }
     }
 }

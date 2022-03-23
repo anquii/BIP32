@@ -1,8 +1,8 @@
 import XCTest
 @testable import BIP32
 
-final class CompressedWIFCoderTests: XCTestCase {
-    private func sut() -> CompressedWIFCoder {
+final class CompressedWIFKeyCoderTests: XCTestCase {
+    private func sut() -> CompressedWIFKeyCoder {
         .init()
     }
 

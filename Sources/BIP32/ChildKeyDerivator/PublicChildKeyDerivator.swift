@@ -19,13 +19,13 @@ extension PublicChildKeyDerivator: PublicChildKeyDerivating {
             let publicKey = try secp256k1.serializedPoint(data: privateKey.key)
             return ExtendedKey(key: publicKey, chainCode: privateKey.chainCode)
         } catch {
-            throw KeyError.invalidKey
+            throw KeyDerivatorError.invalidKey
         }
     }
 
     public func publicKey(publicParentKey: ExtendedKeyable, index: UInt32) throws -> ExtendedKeyable {
         guard KeyIndexRange.normal.contains(index) else {
-            throw KeyError.invalidKey
+            throw KeyDerivatorError.invalidRequirement
         }
 
         let hmacSHA512 = HMAC(key: publicParentKey.chainCode.bytes, variant: .sha2(.sha512))
@@ -35,11 +35,8 @@ extension PublicChildKeyDerivator: PublicChildKeyDerivating {
             let key = Data(hmacSHA512Bytes[HMACSHA512ByteRange.left])
             let chainCode = Data(hmacSHA512Bytes[HMACSHA512ByteRange.right])
 
-            guard
-                BigUInt(key) < .secp256k1CurveOrder,
-                let context = secp256k1_context_create(secp256k1.Context.none.rawValue)
-            else {
-                throw KeyError.invalidKey
+            guard BigUInt(key) < .secp256k1CurveOrder else {
+                throw KeyDerivatorError.invalidKey
             }
             var parsedPublicKey = secp256k1_pubkey()
             let publicKeyFormat = secp256k1.Format.compressed
@@ -48,19 +45,20 @@ extension PublicChildKeyDerivator: PublicChildKeyDerivating {
             var randomBytes = [UInt8](repeating: 0, count: 32)
 
             guard
+                let context = secp256k1_context_create(secp256k1.Context.none.rawValue),
                 SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes) == errSecSuccess,
                 secp256k1_context_randomize(context, randomBytes) == 1,
                 secp256k1_ec_pubkey_parse(context, &parsedPublicKey, publicParentKey.key.bytes, publicParentKey.key.count) == 1,
                 secp256k1_ec_pubkey_tweak_add(context, &parsedPublicKey, key.bytes) == 1,
                 secp256k1_ec_pubkey_serialize(context, &publicKeyBytes, &publicKeyLength, &parsedPublicKey, publicKeyFormat.rawValue) == 1
             else {
-                throw KeyError.invalidKey
+                throw KeyDerivatorError.invalidKey
             }
             secp256k1_context_destroy(context)
 
             return ExtendedKey(key: Data(publicKeyBytes), chainCode: chainCode)
         } catch {
-            throw KeyError.invalidKey
+            throw KeyDerivatorError.invalidKey
         }
     }
 }

@@ -1,17 +1,17 @@
 import Foundation
 import Base58Check
 
-public protocol CompressedWIFEncoding {
+public protocol CompressedWIFKeyEncoding {
     func encode(privateKey: Data, version: UInt8) -> String
 }
 
-public protocol CompressedWIFDecoding {
+public protocol CompressedWIFKeyDecoding {
     func decode(string: String) throws -> CompressedWIFContainer
 }
 
-public typealias CompressedWIFCoding = CompressedWIFEncoding & CompressedWIFDecoding
+public typealias CompressedWIFKeyCoding = CompressedWIFKeyEncoding & CompressedWIFKeyDecoding
 
-public struct CompressedWIFCoder {
+public struct CompressedWIFKeyCoder {
     private static let byteLength = 34
     private static let byteSuffix = UInt8(1)
 
@@ -22,16 +22,16 @@ public struct CompressedWIFCoder {
     }
 }
 
-// MARK: - CompressedWIFEncoding
-extension CompressedWIFCoder: CompressedWIFEncoding {
+// MARK: - CompressedWIFKeyEncoding
+extension CompressedWIFKeyCoder: CompressedWIFKeyEncoding {
     public func encode(privateKey: Data, version: UInt8) -> String {
         let data = Data(version.bytes + privateKey.bytes + Self.byteSuffix.bytes)
         return base58Check.encode(data: data)
     }
 }
 
-// MARK: - CompressedWIFDecoding
-extension CompressedWIFCoder: CompressedWIFDecoding {
+// MARK: - CompressedWIFKeyDecoding
+extension CompressedWIFKeyCoder: CompressedWIFKeyDecoding {
     public func decode(string: String) throws -> CompressedWIFContainer {
         do {
             var data = try base58Check.decode(string: string)
@@ -41,12 +41,12 @@ extension CompressedWIFCoder: CompressedWIFDecoding {
                 let byteSuffix = data.popLast(),
                 byteSuffix == Self.byteSuffix
             else {
-                throw KeyDecodingError.invalidDecoding
+                throw KeyCoderError.invalidDecoding
             }
             return CompressedWIFContainer(privateKey: data, version: version)
 
         } catch {
-            throw KeyDecodingError.invalidDecoding
+            throw KeyCoderError.invalidDecoding
         }
     }
 }

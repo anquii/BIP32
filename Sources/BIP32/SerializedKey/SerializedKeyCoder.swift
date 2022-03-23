@@ -32,7 +32,7 @@ extension SerializedKeyCoder: SerializedKeyDecoding {
             let decodedData = try base58Check.decode(string: string)
             return try SerializedKey(data: decodedData)
         } catch {
-            throw KeyDecodingError.invalidDecoding
+            throw KeyCoderError.invalidDecoding
         }
     }
 }
