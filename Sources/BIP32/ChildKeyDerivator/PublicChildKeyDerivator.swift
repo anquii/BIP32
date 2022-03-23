@@ -41,40 +41,18 @@ extension PublicChildKeyDerivator: PublicChildKeyDerivating {
             else {
                 throw KeyError.invalidKey
             }
-
-            var publicKey = secp256k1_pubkey()
+            var parsedPublicKey = secp256k1_pubkey()
             let publicKeyFormat = secp256k1.Format.compressed
             var publicKeyLength = publicKeyFormat.length
             var publicKeyBytes = [UInt8](repeating: 0, count: publicKeyLength)
             var randomBytes = [UInt8](repeating: 0, count: 32)
 
             guard
-                SecRandomCopyBytes(
-                    kSecRandomDefault,
-                    randomBytes.count,
-                    &randomBytes
-                ) == errSecSuccess,
-                secp256k1_context_randomize(
-                    context,
-                    randomBytes
-                ) == 1,
-                secp256k1_ec_pubkey_parse(
-                    context, &publicKey,
-                    publicParentKey.key.bytes,
-                    publicParentKey.key.count
-                ) == 1,
-                secp256k1_ec_pubkey_tweak_add(
-                    context,
-                    &publicKey,
-                    key.bytes
-                ) == 1,
-                secp256k1_ec_pubkey_serialize(
-                    context,
-                    &publicKeyBytes,
-                    &publicKeyLength,
-                    &publicKey,
-                    publicKeyFormat.rawValue
-                ) == 1
+                SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes) == errSecSuccess,
+                secp256k1_context_randomize(context, randomBytes) == 1,
+                secp256k1_ec_pubkey_parse(context, &parsedPublicKey, publicParentKey.key.bytes, publicParentKey.key.count) == 1,
+                secp256k1_ec_pubkey_tweak_add(context, &parsedPublicKey, key.bytes) == 1,
+                secp256k1_ec_pubkey_serialize(context, &publicKeyBytes, &publicKeyLength, &parsedPublicKey, publicKeyFormat.rawValue) == 1
             else {
                 throw KeyError.invalidKey
             }

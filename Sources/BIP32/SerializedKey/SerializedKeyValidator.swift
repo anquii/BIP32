@@ -1,3 +1,5 @@
+import Foundation
+import secp256k1
 import BigInt
 
 public protocol SerializedKeyValidating {
@@ -32,11 +34,33 @@ extension SerializedKeyValidator: SerializedKeyValidating {
             invalidationRules.append(contentsOf: [!isPrivateKeyInValidRange, !isPrivateKeyPrefixValid])
         case .`public`:
             let isPublicKeyPrefixValid = (2...3).contains(firstByte)
-            invalidationRules.append(!isPublicKeyPrefixValid)
+            let hasVerifiedCurvePoint = try hasVerifiedPublicKeyCurvePoint(publicKey: serializedKey.key)
+            invalidationRules.append(contentsOf: [!isPublicKeyPrefixValid, !hasVerifiedCurvePoint])
         }
 
         guard !invalidationRules.contains(true) else {
             throw KeyError.invalidKey
+        }
+    }
+}
+
+// MARK: - Helpers
+fileprivate extension SerializedKeyValidator {
+    func hasVerifiedPublicKeyCurvePoint(publicKey: Data) throws -> Bool {
+        guard let context = secp256k1_context_create(secp256k1.Context.none.rawValue) else {
+            throw KeyError.invalidKey
+        }
+        defer {
+            secp256k1_context_destroy(context)
+        }
+        var parsedPublicKey = secp256k1_pubkey()
+        var randomBytes = [UInt8](repeating: 0, count: 32)
+        if SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes) == errSecSuccess,
+            secp256k1_context_randomize(context, randomBytes) == 1,
+            secp256k1_ec_pubkey_parse(context, &parsedPublicKey, publicKey.bytes, publicKey.count) == 1 {
+            return true
+        } else {
+            return false
         }
     }
 }
