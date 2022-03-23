@@ -3,7 +3,7 @@ import CryptoSwift
 import RIPEMD160
 
 public protocol KeyFingerprintDerivating {
-    func fingerprint(publicKey: Data) throws -> UInt32
+    func fingerprint(publicKey: Data) -> UInt32
 }
 
 public struct KeyFingerprintDerivator {
