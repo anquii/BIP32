@@ -2,26 +2,19 @@ import XCTest
 import BIP32
 
 final class PublicChildKeyDerivatorTests: XCTestCase {
-    private var privateMasterKeyDerivator: PrivateMasterKeyDerivator!
-    private var publicMasterKeyDerivator: PublicMasterKeyDerivator!
-    private var privateChildKeyDerivator: PrivateChildKeyDerivator!
-    private var keyVersion: UInt32!
-    private var keyFingerprintDerivator: KeyFingerprintDerivator!
-    private var keyIndexHardener: KeyIndexHardener!
-    private var keySerializer: KeySerializer!
-    private var serializedKeyCoder: SerializedKeyCoder!
+    private let privateMasterKeyDerivator = PrivateMasterKeyDerivator()
+    private let publicMasterKeyDerivator = PublicMasterKeyDerivator()
+    private let privateChildKeyDerivator = PrivateChildKeyDerivator()
+    private let keyVersion = BitcoinVersion(network: .mainnet, keyAccessControl: .`public`).wrappedValue
+    private let keyFingerprintDerivator = KeyFingerprintDerivator()
+    private let keyIndexHardener = KeyIndexHardener()
+    private let keySerializer = KeySerializer()
+    private let serializedKeyCoder = SerializedKeyCoder()
+    private let jsonDecoder = JSONDecoder()
     private var testVectors: [KeyTestVector]!
 
     override func setUpWithError() throws {
-        privateMasterKeyDerivator = .init()
-        publicMasterKeyDerivator = .init()
-        privateChildKeyDerivator = .init()
-        keyVersion = BitcoinVersion(network: .mainnet, keyAccessControl: .`public`).wrappedValue
-        keyFingerprintDerivator = .init()
-        keyIndexHardener = .init()
-        keySerializer = .init()
-        serializedKeyCoder = .init()
-        testVectors = try JSONDecoder().decode([KeyTestVector].self, from: keyTestData)
+        testVectors = try jsonDecoder.decode([KeyTestVector].self, from: keyTestData)
     }
 
     private func sut() -> PublicChildKeyDerivator {

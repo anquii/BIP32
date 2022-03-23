@@ -2,10 +2,11 @@ import XCTest
 @testable import BIP32
 
 final class KeyFingerprintDerivatorTests: XCTestCase {
+    private let jsonDecoder = JSONDecoder()
     private var testVectors: [KeyFingerprintTestVector]!
 
     override func setUpWithError() throws {
-        testVectors = try JSONDecoder().decode([KeyFingerprintTestVector].self, from: keyFingerprintTestData)
+        testVectors = try jsonDecoder.decode([KeyFingerprintTestVector].self, from: keyFingerprintTestData)
     }
 
     private func sut() -> KeyFingerprintDerivator {

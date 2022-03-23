@@ -2,20 +2,17 @@ import XCTest
 @testable import BIP32
 
 final class PublicMasterKeyDerivatorTests: XCTestCase {
-    private var privateKeyDerivator: PrivateMasterKeyDerivator!
-    private var keyVersion: UInt32!
+    private let privateKeyDerivator = PrivateMasterKeyDerivator()
+    private let keyVersion = BitcoinVersion(network: .mainnet, keyAccessControl: .`public`).wrappedValue
     private var keyAttributes: MasterKeyAttributes!
-    private var keySerializer: KeySerializer!
-    private var serializedKeyCoder: SerializedKeyCoder!
+    private let keySerializer = KeySerializer()
+    private let serializedKeyCoder = SerializedKeyCoder()
+    private let jsonDecoder = JSONDecoder()
     private var testVectors: [MasterKeyTestVector]!
 
     override func setUpWithError() throws {
-        privateKeyDerivator = .init()
-        keyVersion = BitcoinVersion(network: .mainnet, keyAccessControl: .`public`).wrappedValue
         keyAttributes = .init(accessControl: .`public`, version: keyVersion)
-        keySerializer = .init()
-        serializedKeyCoder = .init()
-        testVectors = try JSONDecoder().decode([MasterKeyTestVector].self, from: publicMasterKeyTestData)
+        testVectors = try jsonDecoder.decode([MasterKeyTestVector].self, from: publicMasterKeyTestData)
     }
 
     private func sut() -> PublicMasterKeyDerivator {
