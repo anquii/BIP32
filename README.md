@@ -20,10 +20,6 @@ Add the following line to your `Package.swift` file:
 ```
 ...or integrate with Xcode via `File -> Swift Packages -> Add Package Dependency...` using the URL of the repository.
 
-## License
-
-`BIP32` is licensed under the terms of the MIT license. See the [LICENSE](LICENSE) file for more information.
-
 ## Usage
 
 ```swift
@@ -48,6 +44,10 @@ let encodedPublicMasterKey = serializedKeyCoder.encode(serializedKey: serialized
 ```
 
 Find out more by exploring the public API (e.g. for child key derivation), and by looking through the [tests](Tests/BIP32Tests).
+
+## License
+
+`BIP32` is licensed under the terms of the MIT license. See the [LICENSE](LICENSE) file for more information.
 
 ## Acknowledgments
 
