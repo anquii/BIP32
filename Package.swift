@@ -33,7 +33,7 @@ let package = Package(
             name: "Base58Check",
             url: "https://github.com/anquii/Base58Check.git",
             .upToNextMajor(from: "1.0.0")
-        ),
+        )
     ],
     targets: [
         .binaryTarget(
