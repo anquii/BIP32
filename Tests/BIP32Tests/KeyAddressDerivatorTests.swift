@@ -1,7 +1,7 @@
 import XCTest
 @testable import BIP32
 
-final class KeyAddressEncoderTests: XCTestCase {
+final class KeyAddressDerivatorTests: XCTestCase {
     private func sut() -> KeyAddressDerivator {
         .init()
     }
