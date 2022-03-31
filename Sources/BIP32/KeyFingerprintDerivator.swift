@@ -15,15 +15,8 @@ public struct KeyFingerprintDerivator {
 // MARK: - KeyFingerprintDerivating
 extension KeyFingerprintDerivator: KeyFingerprintDerivating {
     public func fingerprint(publicKey: Data) -> UInt32 {
-        .init(
-            data: hash160(data: publicKey)[Self.byteRange]
-        )!
-    }
-}
-
-// MARK: - Helpers
-fileprivate extension KeyFingerprintDerivator {
-    func hash160(data: Data) -> Data {
-        RIPEMD160.hash(data: data.sha256())
+        let hash160 = RIPEMD160.hash(data: publicKey.sha256())
+        let data = hash160[Self.byteRange]
+        return .init(data: data)!
     }
 }
