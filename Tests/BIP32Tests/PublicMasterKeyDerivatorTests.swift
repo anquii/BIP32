@@ -47,7 +47,7 @@ final class PublicMasterKeyDerivatorTests: XCTestCase {
 
         for testVector in testVectors {
             let seed = Data(hex: testVector.hexEncodedSeed)
-            let privateKey = try privateKeyDerivator.privateMasterKey(seed: seed)
+            let privateKey = try privateKeyDerivator.privateKey(seed: seed)
             let publicKey = try sut.publicKey(privateKey: privateKey)
             let serializedKey = try keySerializer.serializedKey(extendedKey: publicKey, attributes: keyAttributes)
             let encodedKey = serializedKeyCoder.encode(serializedKey: serializedKey)
@@ -60,7 +60,7 @@ final class PublicMasterKeyDerivatorTests: XCTestCase {
 fileprivate extension PublicMasterKeyDerivatorTests {
     func publicKey() throws -> ExtendedKeyable {
         let seed = Data(hex: testVectors.first!.hexEncodedSeed)
-        let extendedKey = try privateKeyDerivator.privateMasterKey(seed: seed)
+        let extendedKey = try privateKeyDerivator.privateKey(seed: seed)
         return try sut().publicKey(privateKey: extendedKey)
     }
 }

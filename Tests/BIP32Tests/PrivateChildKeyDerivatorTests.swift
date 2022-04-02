@@ -27,7 +27,7 @@ final class PrivateChildKeyDerivatorTests: XCTestCase {
 
         for testVector in testVectors {
             let seed = Data(hex: testVector.hexEncodedSeed)
-            var privateParentKey = try privateMasterKeyDerivator.privateMasterKey(seed: seed)
+            var privateParentKey = try privateMasterKeyDerivator.privateKey(seed: seed)
 
             for derivatedKey in testVector.derivatedKeys {
                 guard derivatedKey.depth > 0 else {
@@ -37,7 +37,7 @@ final class PrivateChildKeyDerivatorTests: XCTestCase {
                 let childKeyIndex = derivatedKey.isIndexHardened
                     ? try keyIndexHardener.hardenedIndex(normalIndex: derivatedKey.index)
                     : derivatedKey.index
-                let privateChildKey = try sut.privateChildKey(
+                let privateChildKey = try sut.privateKey(
                     privateParentKey: privateParentKey,
                     index: childKeyIndex
                 )

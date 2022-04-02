@@ -27,7 +27,7 @@ final class PublicChildKeyDerivatorTests: XCTestCase {
 
         for testVector in testVectors {
             let seed = Data(hex: testVector.hexEncodedSeed)
-            var privateParentKey = try privateMasterKeyDerivator.privateMasterKey(seed: seed)
+            var privateParentKey = try privateMasterKeyDerivator.privateKey(seed: seed)
             var publicParentKey = try publicMasterKeyDerivator.publicKey(privateKey: privateParentKey)
 
             for derivatedKey in testVector.derivatedKeys {
@@ -37,7 +37,7 @@ final class PublicChildKeyDerivatorTests: XCTestCase {
                 let childKeyIndex = derivatedKey.isIndexHardened
                     ? try keyIndexHardener.hardenedIndex(normalIndex: derivatedKey.index)
                     : derivatedKey.index
-                let privateChildKey = try privateChildKeyDerivator.privateChildKey(
+                let privateChildKey = try privateChildKeyDerivator.privateKey(
                     privateParentKey: privateParentKey,
                     index: childKeyIndex
                 )
@@ -70,7 +70,7 @@ final class PublicChildKeyDerivatorTests: XCTestCase {
 
         for testVector in testVectors {
             let seed = Data(hex: testVector.hexEncodedSeed)
-            var privateParentKey = try privateMasterKeyDerivator.privateMasterKey(seed: seed)
+            var privateParentKey = try privateMasterKeyDerivator.privateKey(seed: seed)
             var publicParentKey = try publicMasterKeyDerivator.publicKey(privateKey: privateParentKey)
 
             for derivatedKey in testVector.derivatedKeys {
@@ -79,7 +79,7 @@ final class PublicChildKeyDerivatorTests: XCTestCase {
                 }
                 guard !derivatedKey.isIndexHardened else {
                     let childKeyIndex = try keyIndexHardener.hardenedIndex(normalIndex: derivatedKey.index)
-                    let privateChildKey = try privateChildKeyDerivator.privateChildKey(
+                    let privateChildKey = try privateChildKeyDerivator.privateKey(
                         privateParentKey: privateParentKey,
                         index: childKeyIndex
                     )
@@ -105,7 +105,7 @@ final class PublicChildKeyDerivatorTests: XCTestCase {
                 )
                 let encodedChildKey = serializedKeyCoder.encode(serializedKey: serializedChildKey)
                 XCTAssertEqual(encodedChildKey, derivatedKey.base58CheckEncodedPublicKey)
-                privateParentKey = try privateChildKeyDerivator.privateChildKey(
+                privateParentKey = try privateChildKeyDerivator.privateKey(
                     privateParentKey: privateParentKey,
                     index: derivatedKey.index
                 )
