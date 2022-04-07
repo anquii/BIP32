@@ -16,6 +16,10 @@ let package = Package(
     ],
     dependencies: [
         .package(
+            url: "https://github.com/anquii/CryptoSwiftWrapper.git",
+            from: "1.4.3"
+        ),
+        .package(
             url: "https://github.com/attaswift/BigInt.git",
             .upToNextMajor(from: "5.3.0")
         ),
@@ -36,15 +40,10 @@ let package = Package(
         )
     ],
     targets: [
-        .binaryTarget(
-            name: "CryptoSwift",
-            url: "https://github.com/krzyzanowskim/CryptoSwift/releases/download/1.4.3/CryptoSwift.xcframework.zip",
-            checksum: "5eaa8fe30805789ad5472edb27182d41afecf1283f0c6efb0afc9261b28f5cf6"
-        ),
         .target(
             name: "BIP32",
             dependencies: [
-                "CryptoSwift",
+                "CryptoSwiftWrapper",
                 "BigInt",
                 "secp256k1",
                 "RIPEMD160",
