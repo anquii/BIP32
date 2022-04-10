@@ -8,9 +8,14 @@ public protocol ExtendedKeyable {
 public struct ExtendedKey: ExtendedKeyable {
     public let key: Data
     public let chainCode: Data
+}
 
-    init(key: Data, chainCode: Data) {
-        self.key = key
-        self.chainCode = chainCode
+// MARK: - ExtendedKey+SerializedKeyable
+public extension ExtendedKey {
+    init(serializedKey: SerializedKeyable) {
+        self = .init(
+            key: serializedKey.key,
+            chainCode: serializedKey.chainCode
+        )
     }
 }
