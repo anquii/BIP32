@@ -6,7 +6,7 @@ public protocol CompressedWIFKeyEncoding {
 }
 
 public protocol CompressedWIFKeyDecoding {
-    func decode(string: String) throws -> CompressedWIFContainer
+    func decode(string: String) throws -> (privateKey: Data, version: UInt8)
 }
 
 public typealias CompressedWIFKeyCoding = CompressedWIFKeyEncoding & CompressedWIFKeyDecoding
@@ -32,7 +32,7 @@ extension CompressedWIFKeyCoder: CompressedWIFKeyEncoding {
 
 // MARK: - CompressedWIFKeyDecoding
 extension CompressedWIFKeyCoder: CompressedWIFKeyDecoding {
-    public func decode(string: String) throws -> CompressedWIFContainer {
+    public func decode(string: String) throws -> (privateKey: Data, version: UInt8) {
         do {
             var data = try base58Check.decode(string: string)
             guard
@@ -43,7 +43,7 @@ extension CompressedWIFKeyCoder: CompressedWIFKeyDecoding {
             else {
                 throw KeyCoderError.invalidDecoding
             }
-            return CompressedWIFContainer(privateKey: data, version: version)
+            return (data, version)
 
         } catch {
             throw KeyCoderError.invalidDecoding
