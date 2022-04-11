@@ -12,10 +12,10 @@ public struct ExtendedKey: ExtendedKeyable {
 
 // MARK: - ExtendedKey+SerializedKeyable
 public extension ExtendedKey {
-    init(serializedKey: SerializedKeyable) {
-        self = .init(
-            key: serializedKey.key,
-            chainCode: serializedKey.chainCode
-        )
+    init(serializedKey: SerializedKeyable, accessControl: KeyAccessControl) {
+        let key = accessControl == .`private`
+            ? serializedKey.key.dropFirst()
+            : serializedKey.key
+        self = .init(key: key, chainCode: serializedKey.chainCode)
     }
 }
