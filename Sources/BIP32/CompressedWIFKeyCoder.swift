@@ -12,6 +12,7 @@ public protocol CompressedWIFKeyDecoding {
 public typealias CompressedWIFKeyCoding = CompressedWIFKeyEncoding & CompressedWIFKeyDecoding
 
 public struct CompressedWIFKeyCoder {
+    private static let keyLength = 32
     private static let byteLength = 34
     private static let byteSuffix = UInt8(1)
 
@@ -25,7 +26,7 @@ public struct CompressedWIFKeyCoder {
 // MARK: - CompressedWIFKeyEncoding
 extension CompressedWIFKeyCoder: CompressedWIFKeyEncoding {
     public func encode(privateKey: Data, version: UInt8) -> String {
-        let data = Data(version.bytes + privateKey.bytes + Self.byteSuffix.bytes)
+        let data = Data(version.bytes + privateKey.suffix(Self.keyLength).bytes + Self.byteSuffix.bytes)
         return base58Check.encode(data: data)
     }
 }
