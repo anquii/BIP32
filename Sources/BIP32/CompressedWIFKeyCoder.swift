@@ -45,7 +45,6 @@ extension CompressedWIFKeyCoder: CompressedWIFKeyDecoding {
                 throw KeyCoderError.invalidDecoding
             }
             return (data, version)
-
         } catch {
             throw KeyCoderError.invalidDecoding
         }
