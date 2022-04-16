@@ -10,11 +10,11 @@ final class CompressedWIFKeyCoderTests: XCTestCase {
     func testGivenVectorHex_WhenEncode_ThenEqualVectorWIF() throws {
         let data = Data(hex: CompressedWIFTestVector.hexEncodedPrivateKey)
         let encodedKey = sut().encode(privateKey: data, version: CompressedWIFTestVector.version)
-        XCTAssertEqual(encodedKey, CompressedWIFTestVector.wifCompressedPrivateKey)
+        XCTAssertEqual(encodedKey, CompressedWIFTestVector.compressedWIFEncodedPrivateKey)
     }
 
     func testGivenVectorWIF_WhenDecode_ThenEqualVectorHex() throws {
-        let decodedResult = try sut().decode(string: CompressedWIFTestVector.wifCompressedPrivateKey)
+        let decodedResult = try sut().decode(string: CompressedWIFTestVector.compressedWIFEncodedPrivateKey)
         XCTAssertEqual(decodedResult.privateKey.toHexString(), CompressedWIFTestVector.hexEncodedPrivateKey)
         XCTAssertEqual(decodedResult.version, CompressedWIFTestVector.version)
     }
