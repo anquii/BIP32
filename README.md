@@ -29,7 +29,7 @@ let keySerializer: KeySerializing = KeySerializer()
 let serializedKeyCoder: SerializedKeyCoding = SerializedKeyCoder()
 
 let privateMasterKeyDerivator: PrivateMasterKeyDerivating = PrivateMasterKeyDerivator()
-let privateMasterKey = try privateMasterKeyDerivator.privateMasterKey(seed: seed)
+let privateMasterKey = try privateMasterKeyDerivator.privateKey(seed: seed)
 let privateMasterKeyAttributes = MasterKeyAttributes(accessControl: .`private`, version: version)
 let serializedPrivateMasterKey = try keySerializer.serializedKey(extendedKey: privateMasterKey, attributes: privateMasterKeyAttributes)
 let encodedPrivateMasterKey = serializedKeyCoder.encode(serializedKey: serializedPrivateMasterKey)
