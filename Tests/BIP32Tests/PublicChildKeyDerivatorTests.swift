@@ -6,7 +6,7 @@ final class PublicChildKeyDerivatorTests: XCTestCase {
     private let privateMasterKeyDerivator = PrivateMasterKeyDerivator()
     private let publicMasterKeyDerivator = PublicMasterKeyDerivator()
     private let privateChildKeyDerivator = PrivateChildKeyDerivator()
-    private let keyVersion = BitcoinVersion(network: .mainnet, keyAccessControl: .`public`).wrappedValue
+    private let keyVersion = KeyVersion(network: .mainnet, keyAccessControl: .`public`).wrappedValue
     private let keyFingerprintDerivator = KeyFingerprintDerivator()
     private let keyIndexHardener = KeyIndexHardener()
     private let keySerializer = KeySerializer()

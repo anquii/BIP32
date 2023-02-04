@@ -4,7 +4,7 @@ import XCTest
 
 final class PublicMasterKeyDerivatorTests: XCTestCase {
     private let privateKeyDerivator = PrivateMasterKeyDerivator()
-    private let keyVersion = BitcoinVersion(network: .mainnet, keyAccessControl: .`public`).wrappedValue
+    private let keyVersion = KeyVersion(network: .mainnet, keyAccessControl: .`public`).wrappedValue
     private var keyAttributes: MasterKeyAttributes!
     private let keySerializer = KeySerializer()
     private let serializedKeyCoder = SerializedKeyCoder()

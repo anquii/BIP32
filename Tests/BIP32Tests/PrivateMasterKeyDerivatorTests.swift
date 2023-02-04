@@ -3,7 +3,7 @@ import XCTest
 import BIP32
 
 final class PrivateMasterKeyDerivatorTests: XCTestCase {
-    private let keyVersion = BitcoinVersion(network: .mainnet, keyAccessControl: .`private`).wrappedValue
+    private let keyVersion = KeyVersion(network: .mainnet, keyAccessControl: .`private`).wrappedValue
     private var keyAttributes: MasterKeyAttributes!
     private let keySerializer = KeySerializer()
     private let serializedKeyCoder = SerializedKeyCoder()
