@@ -30,14 +30,16 @@ let serializedKeyCoder: SerializedKeyCoding = SerializedKeyCoder()
 
 let privateMasterKeyDerivator: PrivateMasterKeyDerivating = PrivateMasterKeyDerivator()
 let privateMasterKey = try privateMasterKeyDerivator.privateKey(seed: seed)
-let privateMasterKeyAttributes = MasterKeyAttributes(accessControl: .`private`, version: version)
+let privateMasterKeyVersion = KeyVersion(network: network, keyAccessControl: .`private`).wrappedValue
+let privateMasterKeyAttributes = MasterKeyAttributes(accessControl: .`private`, version: privateMasterKeyVersion)
 let serializedPrivateMasterKey = try keySerializer.serializedKey(extendedKey: privateMasterKey, attributes: privateMasterKeyAttributes)
 let encodedPrivateMasterKey = serializedKeyCoder.encode(serializedKey: serializedPrivateMasterKey)
 // e.g. xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi
 
 let publicMasterKeyDerivator: PublicMasterKeyDerivating = PublicMasterKeyDerivator()
 let publicMasterKey = try publicMasterKeyDerivator.publicKey(privateKey: privateMasterKey)
-let publicMasterKeyAttributes = MasterKeyAttributes(accessControl: .`public`, version: version)
+let publicMasterKeyVersion = KeyVersion(network: network, keyAccessControl: .`public`).wrappedValue
+let publicMasterKeyAttributes = MasterKeyAttributes(accessControl: .`public`, version: publicMasterKeyVersion)
 let serializedPublicMasterKey = try keySerializer.serializedKey(extendedKey: publicMasterKey, attributes: publicMasterKeyAttributes)
 let encodedPublicMasterKey = serializedKeyCoder.encode(serializedKey: serializedPublicMasterKey)
 // e.g. xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8
