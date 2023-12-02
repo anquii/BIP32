@@ -47,12 +47,12 @@
         }
       },
       {
-        "package": "secp256k1",
+        "package": "secp256k1.swift",
         "repositoryURL": "https://github.com/GigaBitcoin/secp256k1.swift.git",
         "state": {
           "branch": null,
-          "revision": "abe7c8232970c1fd57f4c77590bce2c868df7137",
-          "version": "0.5.0"
+          "revision": "0f5f60ee9ad739c9603c3546c726a109d2c24cbd",
+          "version": "0.14.0"
         }
       }
     ]
