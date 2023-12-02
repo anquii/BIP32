@@ -34,7 +34,7 @@ let package = Package(
         .package(
             name: "secp256k1",
             url: "https://github.com/GigaBitcoin/secp256k1.swift.git",
-            .exact("0.5.0")
+            .exact("0.14.0")
         )
     ],
     targets: [

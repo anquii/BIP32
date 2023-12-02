@@ -6,10 +6,10 @@ extension secp256k1 {
         try secp256k1
             .Signing
             .PrivateKey(
-                rawRepresentation: data,
+                dataRepresentation: data,
                 format: .compressed
             )
             .publicKey
-            .rawRepresentation
+            .dataRepresentation
     }
 }
